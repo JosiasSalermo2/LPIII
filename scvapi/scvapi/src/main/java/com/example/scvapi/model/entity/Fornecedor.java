@@ -1,6 +1,11 @@
 package com.example.scvapi.model.entity;
 
-public class Fornecedor {
-    private String cnpj;
-    private String razaoSocial;
+import lombok.Data;
+import javax.persistence.*;
+
+@Entity
+@Data
+
+public class Fornecedor extends PessoaJuridica {
+
 }
