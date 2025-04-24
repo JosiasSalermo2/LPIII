@@ -13,11 +13,8 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Funcionario {
+public class Funcionario extends PessoaFisica{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String especialidade;
     private String registroConselho;
