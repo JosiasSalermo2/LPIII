@@ -17,6 +17,7 @@ public abstract class PessoaJuridica {
     private Long id;
 
     private String nomeFantasia;
+    private String email;
     private String cnpj;
     private String razaoSocial;
 }
