@@ -17,5 +17,7 @@ public class PessoaFisica extends Pessoa{
     private String dataNascimento;
     private String cpf;
     private String rg;
+    private String nome;
+    private String email;
 
 }
