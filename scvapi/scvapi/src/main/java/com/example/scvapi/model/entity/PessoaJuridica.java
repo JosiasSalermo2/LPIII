@@ -5,16 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@MappedSuperclass
 
-public class PessoaJuridica extends Pessoa{
-
+public abstract class PessoaJuridica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nomeFantasia;
     private String email;
     private String cnpj;
     private String razaoSocial;
+
 }
