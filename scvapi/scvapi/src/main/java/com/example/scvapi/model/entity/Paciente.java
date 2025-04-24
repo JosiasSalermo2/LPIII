@@ -13,11 +13,9 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Paciente {
+public class Paciente extends PessoaFisica {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+
 
     private String tipoSanguineo;
     private String alergia;
