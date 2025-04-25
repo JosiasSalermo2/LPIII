@@ -18,6 +18,7 @@ public class Funcionario extends PessoaFisica{
     private String dataAdmissao;
     private Double salario;
 
-
+    @ManyToOne
+    private PessoaFisica pessoaFisica;
 
 }
