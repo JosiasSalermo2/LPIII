@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -22,4 +19,9 @@ public class Vacinacao {
 
     private String dataAplicacao;
 
+    @ManyToOne
+    private Paciente paciente;
+
+    @ManyToOne
+    private Agendamento agendamento;
 }
