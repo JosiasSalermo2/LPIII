@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Fornecedor extends PessoaJuridica {
 
-
+    @ManyToOne
+    private PessoaJuridica pessoaJuridica;
 
 }

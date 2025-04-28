@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -24,4 +21,13 @@ public class Vacina {
     private String indicacao;
     private String contraIndicacao;
     private int dosesAmpola;
+
+    @ManyToOne
+    private TipoVacina tipoVacinaDescricao;
+
+    @ManyToOne
+    private Fornecedor fornecedor;
+
+    @ManyToOne
+    private Fabricante fabricante;
 }

@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -23,4 +20,13 @@ public class Lote {
     private String numeroLote;
     private int numeroAmpola;
     private int dosesAmpola;
+
+    @ManyToOne
+    private Compra compra;
+
+    @ManyToOne
+    private Vacina vacina;
+
+    @ManyToOne
+    private Estoque estoque;
 }

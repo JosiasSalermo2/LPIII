@@ -8,4 +8,7 @@ import javax.persistence.*;
 
 public class Fabricante extends PessoaJuridica {
 
+    @ManyToOne
+    private PessoaJuridica pessoaJuridica;
+
 }
