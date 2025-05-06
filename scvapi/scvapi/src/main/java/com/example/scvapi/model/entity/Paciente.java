@@ -19,6 +19,5 @@ public class Paciente extends PessoaFisica {
     private String contraindicacao;
     private String medicamentosRegulares;
 
-    @ManyToOne
-    private PessoaFisica pessoaFisica;
+
 }
