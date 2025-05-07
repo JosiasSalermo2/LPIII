@@ -1,5 +1,8 @@
 package com.example.scvapi.api.dto;
+import com.example.scvapi.model.entity.Endereco;
+import com.example.scvapi.model.entity.Estoque;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 @Data
 @NoArgsConstructor
@@ -14,4 +17,10 @@ public class EstoqueDTO {
     private Long vacinacaoId;
     private Long descarteId;
     private Long funcionarioId;
+
+    public static EstoqueDTO create(Estoque estoque) {
+        ModelMapper modelMapper = new ModelMapper();
+        EstoqueDTO dto = modelMapper.map(estoque, EstoqueDTO.class);
+        return dto;
+    }
 }
