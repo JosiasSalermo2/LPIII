@@ -8,7 +8,7 @@ public class PacienteDTO {
     private String tipoPaciente;
     private String alergia;
     private String contraindicacao;
-    private String medicamento;
+    private String medicamentosRegulares;
 
 
 }
