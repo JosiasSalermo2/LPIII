@@ -1,5 +1,8 @@
 package com.example.scvapi.api.dto;
+import com.example.scvapi.model.entity.Vacina;
+import com.example.scvapi.model.entity.Vacinacao;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +18,12 @@ public class VacinaDTO {
     private Long fornecedorId;
     private Long fabricanteId;
 
-
+    public static VacinaDTO create(Vacina vacina) {
+        ModelMapper modelMapper = new ModelMapper();
+        VacinaDTO dto = modelMapper.map(vacina, VacinaDTO.class);
+        dto.tipoVacinaDescricaoId = vacina.getTipoVacinaDescricao().getId();
+        dto.fornecedorId = vacina.getFornecedor().getId();
+        dto.fabricanteId = vacina.getFabricante().getId();
+        return dto;
+    }
 }
