@@ -1,5 +1,8 @@
 package com.example.scvapi.api.dto;
+import com.example.scvapi.model.entity.Comorbidades;
+import com.example.scvapi.model.entity.Endereco;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +18,10 @@ public class EnderecoDTO {
     private String cep;
     private String pais;
     private Long pacienteId;
+
+    public static EnderecoDTO create(Endereco endereco) {
+        ModelMapper modelMapper = new ModelMapper();
+        EnderecoDTO dto = modelMapper.map(endereco, EnderecoDTO.class);
+        return dto;
+    }
 }
