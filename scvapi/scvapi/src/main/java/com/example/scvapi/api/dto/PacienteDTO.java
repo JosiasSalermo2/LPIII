@@ -1,5 +1,8 @@
 package com.example.scvapi.api.dto;
+import com.example.scvapi.model.entity.Comorbidades;
+import com.example.scvapi.model.entity.Paciente;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 @Data
 @NoArgsConstructor
@@ -10,5 +13,9 @@ public class PacienteDTO {
     private String contraindicacao;
     private String medicamentosRegulares;
 
-
+    public static PacienteDTO create(Paciente paciente) {
+        ModelMapper modelMapper = new ModelMapper();
+        PacienteDTO dto = modelMapper.map(paciente, PacienteDTO.class);
+        return dto;
+    }
 }
