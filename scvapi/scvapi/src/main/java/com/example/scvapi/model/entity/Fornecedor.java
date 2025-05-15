@@ -12,7 +12,4 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Fornecedor extends PessoaJuridica {
 
-    private String razaoSocial;
-    private String cnpj;
-
 }
