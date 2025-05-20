@@ -1,7 +1,6 @@
 package com.example.scvapi.service;
 
 import com.example.scvapi.exception.RegraNegocioException;
-import com.example.scvapi.model.entity.Cargo;
 import com.example.scvapi.model.entity.Comorbidades;
 import com.example.scvapi.repository.ComorbidadesRepository;
 
