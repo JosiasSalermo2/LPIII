@@ -6,15 +6,16 @@ import org.modelmapper.ModelMapper;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PerfilDTO {
+public class UsuarioDTO {
     private Long id;
-    private String perfil;
-    private String acessos;
+    private String login;
+    private String cpf;
+    private boolean administrador;
     private Long funcionarioId;
 
-    public static PerfilDTO create(Usuario usuario) {
+    public static UsuarioDTO create(Usuario usuario) {
         ModelMapper modelMapper = new ModelMapper();
-        PerfilDTO dto = modelMapper.map(usuario, PerfilDTO.class);
+        UsuarioDTO dto = modelMapper.map(usuario, UsuarioDTO.class);
         dto.funcionarioId = usuario.getFuncionario().getId();
         return dto;
     }
