@@ -1,6 +1,5 @@
 package com.example.scvapi.api.dto;
-import com.example.scvapi.model.entity.Agendamento;
-import com.example.scvapi.model.entity.Perfil;
+import com.example.scvapi.model.entity.Usuario;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -13,10 +12,10 @@ public class PerfilDTO {
     private String acessos;
     private Long funcionarioId;
 
-    public static PerfilDTO create(Perfil perfil) {
+    public static PerfilDTO create(Usuario usuario) {
         ModelMapper modelMapper = new ModelMapper();
-        PerfilDTO dto = modelMapper.map(perfil, PerfilDTO.class);
-        dto.funcionarioId = perfil.getFuncionario().getId();
+        PerfilDTO dto = modelMapper.map(usuario, PerfilDTO.class);
+        dto.funcionarioId = usuario.getFuncionario().getId();
         return dto;
     }
 }
