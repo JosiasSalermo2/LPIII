@@ -9,18 +9,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class PerfilService {
+public class UsuarioService {
     private UsuarioRepository repository;
 
-    public PerfilService(UsuarioRepository repository) {
+    public UsuarioService(UsuarioRepository repository) {
         this.repository = repository;
     }
 
-    public List<Usuario> getPerfil(){
+    public List<Usuario> getUsuario(){
         return repository.findAll();
     }
 
-    public Optional<Usuario> getPerfilById(Long id) {
+    public Optional<Usuario> getUsuarioById(Long id) {
         return repository.findById(id);
     }
 
@@ -37,8 +37,14 @@ public class PerfilService {
     }
 
     private void validar(Usuario usuario) {
-        if (usuario.getNome() == null || usuario.getNome().trim().equals("")) {
-            throw new RegraNegocioException("Nome inválido");
+        if (usuario.getLogin() == null || usuario.getLogin().equals("")) {
+            throw new RegraNegocioException("Login inválido");
+        }
+        if (usuario.getCpf() == null || usuario.getCpf().equals("")) {
+            throw new RegraNegocioException("CPF inválido");
+        }
+        if (usuario.getAdministrador() == null || usuario.getAdministrador().equals("")) {
+            throw new RegraNegocioException("Administrador inválido");
         }
     }
 
