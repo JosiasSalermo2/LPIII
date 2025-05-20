@@ -2,7 +2,7 @@ package com.example.scvapi.service;
 
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Usuario;
-import com.example.scvapi.repository.PerfilRepository;
+import com.example.scvapi.repository.UsuarioRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class PerfilService {
-    private PerfilRepository repository;
+    private UsuarioRepository repository;
 
-    public PerfilService(PerfilRepository repository) {
+    public PerfilService(UsuarioRepository repository) {
         this.repository = repository;
     }
 
