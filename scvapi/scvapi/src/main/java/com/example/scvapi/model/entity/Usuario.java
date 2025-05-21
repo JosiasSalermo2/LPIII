@@ -10,14 +10,15 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Perfil {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String perfil;
-    private String acessos;
+    private String login;
+    private String cpf;
+    private boolean administrador;
 
     @ManyToOne
     private Funcionario funcionario;
