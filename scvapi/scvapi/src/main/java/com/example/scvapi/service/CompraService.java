@@ -1,5 +1,6 @@
 package com.example.scvapi.service;
 
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Compra;
 import com.example.scvapi.repository.CompraRepository;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,8 @@ public class CompraService
 
     private void validar(Compra compra)
     {
-        //aqui é para validar os campos obrigatórios
+        if (tipoVacina.getTipoVacina() == null || tipoVacina.getTipoVacina().trim().equals("")) {
+            throw new RegraNegocioException("Tipo de vacina inválido");
+        }
     }
 }
