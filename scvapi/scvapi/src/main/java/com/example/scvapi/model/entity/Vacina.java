@@ -17,7 +17,6 @@ public class Vacina {
     private Long id;
 
     private String vacina;
-    private String tipoVacina;
     private String indicacao;
     private String contraIndicacao;
     private int dosesAmpola;
