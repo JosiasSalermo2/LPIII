@@ -22,9 +22,4 @@ public class Agendamento {
 
     @ManyToOne
     private Paciente paciente;
-
-    @ManyToOne
-    private Vacinacao vacinacao;
-
-
 }
