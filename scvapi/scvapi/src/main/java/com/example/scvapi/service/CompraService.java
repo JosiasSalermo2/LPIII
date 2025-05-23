@@ -57,7 +57,7 @@ public class CompraService
         if (compra.getFabricante().getEmail() == null || compra.getFabricante().getEmail().equals("")) {
             throw new RegraNegocioException("E-mail inválido");
         }
-        if (compra.getValor() == 0 ) {
+        if (compra.getValor() == 0 || compra.getValor() < 0) {
             throw new RegraNegocioException("Valor inválido");
         }
         if (compra.getDataCompra() == null || compra.getDataCompra().equals("")) {

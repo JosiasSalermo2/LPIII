@@ -45,6 +45,14 @@ public class DescarteService
 
     private void validar(Descarte descarte)
     {
-        //aqui é para validar os campos obrigatórios
+        if (descarte.getQuantidadeDescarte() == 0 || descarte.getQuantidadeDescarte() < 0) {
+            throw new RegraNegocioException("Quantidade inválida");
+        }
+        if (descarte.getEstoque().getNome() == null || descarte.getEstoque().getNome().equals("")) {
+            throw new RegraNegocioException("Estoque inválido");
+        }
+
+        //Falta outros campos porque no DescarteDTO não tem data descarte e nem motivo
+
     }
 }
