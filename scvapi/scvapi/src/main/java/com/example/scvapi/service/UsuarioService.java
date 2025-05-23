@@ -3,12 +3,14 @@ package com.example.scvapi.service;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Usuario;
 import com.example.scvapi.repository.UsuarioRepository;
-
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class UsuarioService {
     private UsuarioRepository repository;
 
@@ -42,9 +44,6 @@ public class UsuarioService {
         }
         if (usuario.getCpf() == null || usuario.getCpf().equals("")) {
             throw new RegraNegocioException("CPF inválido");
-        }
-        if (usuario.getAdministrador() == null || usuario.getAdministrador().equals("")) {
-            throw new RegraNegocioException("Administrador inválido");
         }
     }
 

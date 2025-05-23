@@ -3,12 +3,14 @@ package com.example.scvapi.service;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Paciente;
 import com.example.scvapi.repository.PacienteRepository;
-
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class PacienteService
 {
     private PacienteRepository repository;

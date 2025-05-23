@@ -3,12 +3,14 @@ package com.example.scvapi.service;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Agendamento;
 import com.example.scvapi.repository.AgendamentoRepository;
-
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class AgendamentoService 
 {
     private AgendamentoRepository repository;

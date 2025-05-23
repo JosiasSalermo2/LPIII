@@ -3,12 +3,14 @@ package com.example.scvapi.service;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Vacina;
 import com.example.scvapi.repository.VacinaRepository;
-
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class VacinaService
 {
     private VacinaRepository repository;
@@ -46,7 +48,7 @@ public class VacinaService
         if (vacina.getVacina() == null || vacina.getVacina().trim().equals("")) {
             throw new RegraNegocioException("Nome da vacina inválido");
         }
-        if (vacina.getTipoVacina() == null || vacina.getTipoVacina().trim().equals("")) {
+        if (vacina.getTipoVacinaDescricao() == null || vacina.getTipoVacinaDescricao().equals("")) {
             throw new RegraNegocioException("Tipo da vacina inválido");
         }
     }

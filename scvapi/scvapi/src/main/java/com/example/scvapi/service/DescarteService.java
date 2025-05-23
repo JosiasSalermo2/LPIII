@@ -1,13 +1,16 @@
 package com.example.scvapi.service;
 
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Descarte;
 import com.example.scvapi.repository.DescarteRepository;
-
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class DescarteService
 {
     private DescarteRepository repository;
