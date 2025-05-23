@@ -45,8 +45,31 @@ public class CompraService
 
     private void validar(Compra compra)
     {
-        if (tipoVacina.getTipoVacina() == null || tipoVacina.getTipoVacina().trim().equals("")) {
-            throw new RegraNegocioException("Tipo de vacina inválido");
+        if (compra.getFabricante().getNomeFantasia() == null || compra.getFabricante().getNomeFantasia().equals("")) {
+            throw new RegraNegocioException("Fabricante inválido");
         }
+        if (compra.getFabricante().getCnpj() == null || compra.getFabricante().getCnpj().equals("")) {
+            throw new RegraNegocioException("CNPJ inválido");
+        }
+        if (compra.getFabricante().getRazaoSocial() == null || compra.getFabricante().getRazaoSocial().equals("")) {
+            throw new RegraNegocioException("Razão social inválido");
+        }
+        if (compra.getFabricante().getEmail() == null || compra.getFabricante().getEmail().equals("")) {
+            throw new RegraNegocioException("E-mail inválido");
+        }
+        if (compra.getValor() == 0 ) {
+            throw new RegraNegocioException("Valor inválido");
+        }
+        if (compra.getDataCompra() == null || compra.getDataCompra().equals("")) {
+            throw new RegraNegocioException("Data inválida");
+
+        }
+
+        //Falta validar Telefone e Endereço (Essas classes não tem relação no código com Compra) e, por isso, os objetos não aparecem
+        //As classes Vacina e TipoVacina também não estão relacionadas com Compra, e os objetos também não aparecem.
+
+
+
+
     }
 }
