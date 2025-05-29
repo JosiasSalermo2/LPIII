@@ -7,9 +7,9 @@ import com.example.scvapi.service.CargoService;
 import com.example.scvapi.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -20,6 +20,15 @@ import java.util.Optional;
 public class CargoController {
     private final CargoService cargoService;
     private final FuncionarioService funcionarioService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id) {
+        Optional<Cargo> cargo = cargoService.getCargoById(id);
+        if (!cargo.isPresent()) {
+            return new ResponseEntity("Cargo não encontrado", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(cargo.map(CargoDTO::create));
+    }
 
     public Cargo converter(CargoDTO dto){
         ModelMapper modelMapper = new ModelMapper();
