@@ -36,14 +36,6 @@ public class AgendamentoController {
                 agendamento.setPaciente(paciente.get());
             }
         }
-        if(dto.getVacinacaoId() != null) {
-            Optional<Vacinacao> vacinacao = vacinacaoService.getVacinacaoById(dto.getVacinacaoId());
-            if(!vacinacao.isPresent()) {
-                agendamento.setVacinacao(null);
-            }else{
-                agendamento.setVacinacao(vacinacao.get());
-            }
-        }
         return agendamento;
     }
 }
