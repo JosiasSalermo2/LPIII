@@ -45,11 +45,19 @@ public class VacinacaoService
 
     private void validar(Vacinacao vacinacao)
     {
-        if (vacinacao.getPaciente() == null || vacinacao.getPaciente().equals(""))
+        if (vacinacao.getPaciente().getNome() == null || vacinacao.getPaciente().getNome().equals(""))
         {
             throw new RegraNegocioException("Paciente inválido");
         }
-        if (vacinacao.getDataAplicacao() == null || vacinacao.getDataAplicacao().equals(""))
+        if (vacinacao.getPaciente().getEmail() == null || vacinacao.getPaciente().getEmail().equals(""))
+        {
+            throw new RegraNegocioException("Email inválido");
+        }
+        if (vacinacao.getPaciente().getDataNascimento() == null || vacinacao.getPaciente().getDataNascimento().equals(""))
+        {
+            throw new RegraNegocioException("Data de nascimento inválida");
+        }
+        if (vacinacao == null || vacinacao.getDataAplicacao().equals(""))
         {
             throw new RegraNegocioException("Data de aplicação inválida");
         }
