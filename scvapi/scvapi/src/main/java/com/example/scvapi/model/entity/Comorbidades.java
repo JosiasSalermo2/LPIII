@@ -18,7 +18,4 @@ public class Comorbidades {
 
     private String comorbidade;
     private String descricao;
-
-    @ManyToOne
-    private Comorbidades comorbidades;
 }
