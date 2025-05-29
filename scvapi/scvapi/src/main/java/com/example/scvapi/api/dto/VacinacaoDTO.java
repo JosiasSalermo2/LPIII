@@ -12,6 +12,7 @@ public class VacinacaoDTO {
     private String dataVacinacao;
     private Long pacienteId;
     private Long agendamentoId;
+    private Long vacinaId;
 
     public static VacinacaoDTO create(Vacinacao vacinacao) {
         ModelMapper modelMapper = new ModelMapper();

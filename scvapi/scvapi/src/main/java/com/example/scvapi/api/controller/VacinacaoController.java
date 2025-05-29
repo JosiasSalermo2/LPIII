@@ -7,10 +7,18 @@ import com.example.scvapi.model.entity.Vacinacao;
 import com.example.scvapi.service.AgendamentoService;
 import com.example.scvapi.service.PacienteService;
 import com.example.scvapi.service.VacinacaoService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@RestController
+@RequestMapping("/api/v1/vacinacao")
+@RequiredArgsConstructor
+@CrossOrigin
 public class VacinacaoController {
     private final VacinacaoService vacinacaoService;
     private final PacienteService pacienteService;

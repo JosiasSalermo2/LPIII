@@ -5,10 +5,18 @@ import com.example.scvapi.model.entity.Funcionario;
 import com.example.scvapi.model.entity.Usuario;
 import com.example.scvapi.service.FuncionarioService;
 import com.example.scvapi.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@RestController
+@RequestMapping("/api/v1/usuario")
+@RequiredArgsConstructor
+@CrossOrigin
 public class UsuarioController {
     private final UsuarioService usuarioService;
     private final FuncionarioService funcionarioService;

@@ -7,10 +7,18 @@ import com.example.scvapi.model.entity.Fornecedor;
 import com.example.scvapi.service.CompraService;
 import com.example.scvapi.service.FabricanteService;
 import com.example.scvapi.service.FornecedorService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@RestController
+@RequestMapping("/api/v1/compra")
+@RequiredArgsConstructor
+@CrossOrigin
 public class CompraController
 {
     private final CompraService service;

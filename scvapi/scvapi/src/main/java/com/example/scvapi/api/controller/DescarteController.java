@@ -4,10 +4,18 @@ import com.example.scvapi.api.dto.DescarteDTO;
 import com.example.scvapi.model.entity.Descarte;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.EstoqueService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@RestController
+@RequestMapping("/api/v1/descarte")
+@RequiredArgsConstructor
+@CrossOrigin
 public class DescarteController
 {
     private final EstoqueService estoqueService;
