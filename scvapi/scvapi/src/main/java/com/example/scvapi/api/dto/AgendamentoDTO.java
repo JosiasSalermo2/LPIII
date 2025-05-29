@@ -18,7 +18,7 @@ public class AgendamentoDTO {
         ModelMapper modelMapper = new ModelMapper();
         AgendamentoDTO dto = modelMapper.map(agendamento, AgendamentoDTO.class);
         dto.pacienteNome = agendamento.getPaciente().getNome();
-        dto.vacinacaoId = agendamento.getVacinacao().getId();
+
         return dto;
     }
 }

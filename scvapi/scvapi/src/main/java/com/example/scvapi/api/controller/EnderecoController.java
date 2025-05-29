@@ -13,17 +13,17 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/v1/endereco")
+@RequestMapping("/api/v1/enderecos")
 @RequiredArgsConstructor
 @CrossOrigin
 public class EnderecoController
 {
-    private final EnderecoService service;
+    private final EnderecoService enderecoService;
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id)
     {
-        Optional<Endereco> endereco = service.getEnderecoById(id);
+        Optional<Endereco> endereco = enderecoService.getEnderecoById(id);
         if (!endereco.isPresent())
         {
             return new ResponseEntity("Endereco não encontrada", HttpStatus.NOT_FOUND);
