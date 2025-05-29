@@ -7,24 +7,37 @@ import com.example.scvapi.model.entity.Lote;
 import com.example.scvapi.model.entity.Vacina;
 import com.example.scvapi.service.CompraService;
 import com.example.scvapi.service.EstoqueService;
+import com.example.scvapi.service.LoteService;
 import com.example.scvapi.service.VacinaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/lote")
+@RequestMapping("/api/v1/lotes")
 @RequiredArgsConstructor
 @CrossOrigin
 public class LoteController
 {
+    private final LoteService loteService;
     private final CompraService compraService;
     private final VacinaService vacinaService;
     private final EstoqueService estoqueService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id)
+    {
+        Optional<Lote> lote = loteService.getLoteById(id);
+        if (!lote.isPresent())
+        {
+            return new ResponseEntity("Lote não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(lote.map(LoteDTO::create));
+    }
 
     public Lote converter(LoteDTO dto)
     {

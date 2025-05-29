@@ -5,17 +5,30 @@ import com.example.scvapi.model.entity.TipoVacina;
 import com.example.scvapi.service.TipoVacinaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/tipo-vacina")
+@RequestMapping("/api/v1/tipo-vacinas")
 @RequiredArgsConstructor
 @CrossOrigin
 public class TipoVacinaController
 {
-    private final TipoVacinaService service;
+    private final TipoVacinaService tipoVacinaService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id)
+    {
+        Optional<TipoVacina> tipoVacina = tipoVacinaService.getTipoVacinaById(id);
+        if (!tipoVacina.isPresent())
+        {
+            return new ResponseEntity("Tipo de vacina não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(tipoVacina.map(TipoVacinaDTO::create));
+    }
 
     public TipoVacina converter(TipoVacinaDTO dto)
     {

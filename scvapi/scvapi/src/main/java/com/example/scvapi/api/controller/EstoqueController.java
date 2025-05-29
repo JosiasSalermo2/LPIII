@@ -5,17 +5,30 @@ import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.EstoqueService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/estoque")
+@RequestMapping("/api/v1/estoques")
 @RequiredArgsConstructor
 @CrossOrigin
 public class EstoqueController
 {
-    private final EstoqueService service;
+    private final EstoqueService estoqueService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id)
+    {
+        Optional<Estoque> estoque = estoqueService.getEstoqueById(id);
+        if(!estoque.isPresent())
+        {
+            return new ResponseEntity("Estoque não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(estoque.map(EstoqueDTO::create));
+    }
 
     public Estoque converter(EstoqueDTO dto)
     {
