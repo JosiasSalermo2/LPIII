@@ -9,9 +9,8 @@ import com.example.scvapi.service.PacienteService;
 import com.example.scvapi.service.VacinacaoService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -24,6 +23,15 @@ public class AgendamentoController {
     private final PacienteService pacienteService;
     private final VacinacaoService vacinacaoService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable ("id") Long id)
+    {
+        Optional<Agendamento> agendamento = agendamentoService.getAgendamentoById(id);
+        if (!agendamento.isPresent()) {
+            return ResponseEntity.status(404).body("Agendamento não encontrado");
+        }
+        return ResponseEntity.ok(agendamento.map(AgendamentoDTO::create));
+    }
 
     public Agendamento converter(AgendamentoDTO dto){
         ModelMapper modelMapper = new ModelMapper();
