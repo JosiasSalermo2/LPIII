@@ -2,6 +2,7 @@ package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.FabricanteDTO;
 import com.example.scvapi.model.entity.Fabricante;
+import com.example.scvapi.service.FabricanteService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class FabricanteController
 {
-    private final FabricanteController service;
+    private final FabricanteService service;
 
     public Fabricante converter(FabricanteDTO dto)
     {

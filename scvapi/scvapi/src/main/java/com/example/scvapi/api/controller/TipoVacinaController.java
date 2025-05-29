@@ -2,6 +2,7 @@ package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.TipoVacinaDTO;
 import com.example.scvapi.model.entity.TipoVacina;
+import com.example.scvapi.service.TipoVacinaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class TipoVacinaController
 {
-    private final TipoVacinaController service;
+    private final TipoVacinaService service;
 
     public TipoVacina converter(TipoVacinaDTO dto)
     {
