@@ -7,19 +7,28 @@ import com.example.scvapi.service.FuncionarioService;
 import com.example.scvapi.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/usuario")
+@RequestMapping("/api/v1/usuarios")
 @RequiredArgsConstructor
 @CrossOrigin
 public class UsuarioController {
     private final UsuarioService usuarioService;
     private final FuncionarioService funcionarioService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id) {
+        Optional<Usuario> usuario = usuarioService.getUsuarioById(id);
+        if (!usuario.isPresent()) {
+            return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(usuario.map(UsuarioDTO::create));
+    }
 
     public Usuario converter(UsuarioDTO dto){
         ModelMapper modelMapper = new ModelMapper();
