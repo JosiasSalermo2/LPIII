@@ -5,9 +5,11 @@ import com.example.scvapi.model.entity.Comorbidades;
 import com.example.scvapi.service.ComorbidadesService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/comorbidades")
@@ -15,6 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class ComorbidadesController {
     private final ComorbidadesService comorbidadesService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id) {
+        Optional<Comorbidades> comorbidades = comorbidadesService.getComorbidadesById(id);
+        if (!comorbidades.isPresent()) {
+            return new ResponseEntity("Comorbidade não encontrada", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(comorbidades.map(ComorbidadesDTO::create));
+    }
 
     public Comorbidades converter(ComorbidadesDTO dto){
         ModelMapper modelMapper = new ModelMapper();
