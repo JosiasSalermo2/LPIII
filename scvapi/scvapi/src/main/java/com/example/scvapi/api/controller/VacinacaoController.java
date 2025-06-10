@@ -13,20 +13,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/vacinacoes")
 @RequiredArgsConstructor
 @CrossOrigin
 public class VacinacaoController {
-    private final VacinacaoService vacinacaoService;
+    private final VacinacaoService service;
     private final PacienteService pacienteService;
     private final AgendamentoService agendamentoService;
 
+    @GetMapping()
+    public ResponseEntity get(){
+        List<Vacinacao> vacinacoes = service.getVacinacao();
+        return ResponseEntity.ok(vacinacoes.stream().map(VacinacaoDTO::create).collect(Collectors.toList()));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        Optional<Vacinacao> vacinacao = vacinacaoService.getVacinacaoById(id);
+        Optional<Vacinacao> vacinacao = service.getVacinacaoById(id);
         if (!vacinacao.isPresent()) {
             return new ResponseEntity("Vacinacao não encontrada", HttpStatus.NOT_FOUND);
         }
