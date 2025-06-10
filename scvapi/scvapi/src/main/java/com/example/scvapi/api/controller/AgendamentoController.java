@@ -12,21 +12,29 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/agendamentos")
 @RequiredArgsConstructor
 @CrossOrigin
 public class AgendamentoController {
-    private final AgendamentoService agendamentoService;
+    private final AgendamentoService service;
     private final PacienteService pacienteService;
     private final VacinacaoService vacinacaoService;
+
+    @GetMapping()
+    public ResponseEntity get(){
+        List<Agendamento> agendamentos = service.getAgendamento();
+        return ResponseEntity.ok(agendamentos.stream().map(AgendamentoDTO::create).collect(Collectors.toList()));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable ("id") Long id)
     {
-        Optional<Agendamento> agendamento = agendamentoService.getAgendamentoById(id);
+        Optional<Agendamento> agendamento = service.getAgendamentoById(id);
         if (!agendamento.isPresent()) {
             return ResponseEntity.status(404).body("Agendamento não encontrado");
         }
