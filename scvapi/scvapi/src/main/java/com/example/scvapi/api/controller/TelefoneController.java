@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/telefones")
@@ -17,10 +19,17 @@ import java.util.Optional;
 @CrossOrigin
 public class TelefoneController {
 
-    private final TelefoneService telefoneService;
+    private final TelefoneService service;
+
+    @GetMapping()
+    public ResponseEntity get(){
+        List<Telefone> telefones = service.getTelefone();
+        return ResponseEntity.ok(telefones.stream().map(TelefoneDTO::create).collect(Collectors.toList()));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        Optional<Telefone> telefone = telefoneService.getTelefoneById(id);
+        Optional<Telefone> telefone = service.getTelefoneById(id);
         if (!telefone.isPresent()) {
             return new ResponseEntity("Telefone não encontrado", HttpStatus.NOT_FOUND);
         }
