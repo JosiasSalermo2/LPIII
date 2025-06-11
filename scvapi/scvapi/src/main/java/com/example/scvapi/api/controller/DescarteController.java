@@ -1,6 +1,8 @@
 package com.example.scvapi.api.controller;
 
+import com.example.scvapi.api.dto.CompraDTO;
 import com.example.scvapi.api.dto.DescarteDTO;
+import com.example.scvapi.model.entity.Compra;
 import com.example.scvapi.model.entity.Descarte;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.DescarteService;
@@ -11,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/descartes")
@@ -21,6 +25,13 @@ public class DescarteController
 {
     private final DescarteService descarteService;
     private final EstoqueService estoqueService;
+
+    @GetMapping()
+    public ResponseEntity get()
+    {
+        List<Descarte> descartes = descarteService.getDescarte();
+        return ResponseEntity.ok(descartes.stream().map(DescarteDTO::create).collect(Collectors.toList()));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id)

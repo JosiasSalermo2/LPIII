@@ -1,10 +1,8 @@
 package com.example.scvapi.api.controller;
 
+import com.example.scvapi.api.dto.FornecedorDTO;
 import com.example.scvapi.api.dto.LoteDTO;
-import com.example.scvapi.model.entity.Compra;
-import com.example.scvapi.model.entity.Estoque;
-import com.example.scvapi.model.entity.Lote;
-import com.example.scvapi.model.entity.Vacina;
+import com.example.scvapi.model.entity.*;
 import com.example.scvapi.service.CompraService;
 import com.example.scvapi.service.EstoqueService;
 import com.example.scvapi.service.LoteService;
@@ -15,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/lotes")
@@ -27,6 +27,13 @@ public class LoteController
     private final CompraService compraService;
     private final VacinaService vacinaService;
     private final EstoqueService estoqueService;
+
+    @GetMapping()
+    public ResponseEntity get()
+    {
+        List<Lote> lotes = loteService.getLote();
+        return ResponseEntity.ok(lotes.stream().map(LoteDTO::create).collect(Collectors.toList()));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id)

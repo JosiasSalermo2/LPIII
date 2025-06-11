@@ -1,6 +1,8 @@
 package com.example.scvapi.api.controller;
 
+import com.example.scvapi.api.dto.LoteDTO;
 import com.example.scvapi.api.dto.TipoVacinaDTO;
+import com.example.scvapi.model.entity.Lote;
 import com.example.scvapi.model.entity.TipoVacina;
 import com.example.scvapi.service.TipoVacinaService;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +11,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/tipo-vacinas")
+@RequestMapping("/api/v1/tipos-vacinas")
 @RequiredArgsConstructor
 @CrossOrigin
 public class TipoVacinaController
 {
     private final TipoVacinaService tipoVacinaService;
+
+    @GetMapping()
+    public ResponseEntity get()
+    {
+        List<TipoVacina> tipoVacinas = tipoVacinaService.getTipoVacina();
+        return ResponseEntity.ok(tipoVacinas.stream().map(TipoVacinaDTO::create).collect(Collectors.toList()));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id)

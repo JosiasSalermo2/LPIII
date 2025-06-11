@@ -1,6 +1,8 @@
 package com.example.scvapi.api.controller;
 
+import com.example.scvapi.api.dto.EnderecoDTO;
 import com.example.scvapi.api.dto.EstoqueDTO;
+import com.example.scvapi.model.entity.Endereco;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.EstoqueService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/estoques")
@@ -18,6 +22,13 @@ import java.util.Optional;
 public class EstoqueController
 {
     private final EstoqueService estoqueService;
+
+    @GetMapping()
+    public ResponseEntity get()
+    {
+        List<Estoque> estoques = estoqueService.getEstoque();
+        return ResponseEntity.ok(estoques.stream().map(EstoqueDTO::create).collect(Collectors.toList()));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id)

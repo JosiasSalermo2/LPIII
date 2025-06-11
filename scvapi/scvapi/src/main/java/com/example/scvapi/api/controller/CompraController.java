@@ -9,21 +9,41 @@ import com.example.scvapi.service.FabricanteService;
 import com.example.scvapi.service.FornecedorService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/compra")
+@RequestMapping("/api/v1/compras")
 @RequiredArgsConstructor
 @CrossOrigin
 public class CompraController
 {
-    private final CompraService service;
+    private final CompraService compraService;
     private final FornecedorService fornecedorService;
     private final FabricanteService fabricanteService;
+
+    @GetMapping()
+    public ResponseEntity get()
+    {
+        List<Compra> compras = compraService.getCompra();
+        return ResponseEntity.ok(compras.stream().map(CompraDTO::create).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id)
+    {
+        Optional<Compra> compra = compraService.getCompraById(id);
+        if (!compra.isPresent())
+        {
+            return new ResponseEntity("Compra não encontrada.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(compra.map(CompraDTO::create));
+    }
 
     public Compra converter(CompraDTO dto)
     {
