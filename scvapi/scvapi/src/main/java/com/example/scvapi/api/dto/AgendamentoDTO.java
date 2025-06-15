@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 public class AgendamentoDTO {
     private Long id;
     private String dataAgendamento;
-    private String horaAgendamento;
+    private String horarioAgendamento;
     private Long pacienteId;
     private String pacienteNome;
     private Long vacinacaoId;

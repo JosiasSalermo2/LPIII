@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.AgendamentoDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Agendamento;
 import com.example.scvapi.model.entity.Paciente;
 import com.example.scvapi.model.entity.Vacinacao;
@@ -9,6 +10,7 @@ import com.example.scvapi.service.PacienteService;
 import com.example.scvapi.service.VacinacaoService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +41,17 @@ public class AgendamentoController {
             return ResponseEntity.status(404).body("Agendamento não encontrado");
         }
         return ResponseEntity.ok(agendamento.map(AgendamentoDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody AgendamentoDTO dto){
+        try{
+            Agendamento agendamento = converter(dto);
+            agendamento = service.salvar(agendamento);
+            return new ResponseEntity(agendamento, HttpStatus.CREATED);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Agendamento converter(AgendamentoDTO dto){
