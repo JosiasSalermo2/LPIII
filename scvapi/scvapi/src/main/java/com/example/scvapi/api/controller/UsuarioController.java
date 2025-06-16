@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.UsuarioDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Funcionario;
 import com.example.scvapi.model.entity.Usuario;
 import com.example.scvapi.service.FuncionarioService;
@@ -36,6 +37,17 @@ public class UsuarioController {
             return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(usuario.map(UsuarioDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody UsuarioDTO dto) {
+        try {
+            Usuario usuario = converter(dto);
+            usuario = service.salvar(usuario);
+            return new ResponseEntity(usuario, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Usuario converter(UsuarioDTO dto){
