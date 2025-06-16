@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.FuncionarioDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Funcionario;
 import com.example.scvapi.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,17 @@ public class FuncionarioController {
             return new ResponseEntity("Funcionário não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(funcionario.map(FuncionarioDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody FuncionarioDTO dto) {
+        try {
+            Funcionario funcionario = converter(dto);
+            funcionario = service.salvar(funcionario);
+            return new ResponseEntity(funcionario, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        }
     }
 
     public Funcionario converter(FuncionarioDTO dto){

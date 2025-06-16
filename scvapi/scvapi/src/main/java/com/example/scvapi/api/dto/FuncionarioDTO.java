@@ -8,9 +8,14 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FuncionarioDTO {
+    private String nome;
+    private String cpf;
+    private String email;
+    private String rg;
+    private String dataNascimento;
+    private String dataAdmissao;
     private String especialidade;
     private String registroConselho;
-    private String dataNascimento;
     private Double salario;
 
     public static FuncionarioDTO create(Funcionario funcionario) {
