@@ -1,8 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.EnderecoDTO;
 import com.example.scvapi.api.dto.EstoqueDTO;
-import com.example.scvapi.model.entity.Endereco;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.EstoqueService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +38,17 @@ public class EstoqueController
             return new ResponseEntity("Estoque não encontrado.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(estoque.map(EstoqueDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody EstoqueDTO dto) {
+        try {
+            Estoque estoque = converter(dto);
+            estoque = estoqueService.salvar(estoque);
+            return new ResponseEntity(estoque, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Estoque converter(EstoqueDTO dto)

@@ -1,7 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.LoteDTO;
 import com.example.scvapi.api.dto.TipoVacinaDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Lote;
 import com.example.scvapi.model.entity.TipoVacina;
 import com.example.scvapi.service.TipoVacinaService;
@@ -39,6 +39,17 @@ public class TipoVacinaController
             return new ResponseEntity("Tipo de vacina não encontrado.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(tipoVacina.map(TipoVacinaDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody TipoVacinaDTO dto) {
+        try {
+            TipoVacina tipoVacina = converter(dto);
+            tipoVacina = tipoVacinaService.salvar(tipoVacina);
+            return new ResponseEntity(tipoVacina, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public TipoVacina converter(TipoVacinaDTO dto)

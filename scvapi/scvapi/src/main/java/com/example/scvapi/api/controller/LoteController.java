@@ -1,7 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.FornecedorDTO;
 import com.example.scvapi.api.dto.LoteDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.*;
 import com.example.scvapi.service.CompraService;
 import com.example.scvapi.service.EstoqueService;
@@ -44,6 +44,17 @@ public class LoteController
             return new ResponseEntity("Lote não encontrado.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(lote.map(LoteDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody LoteDTO dto) {
+        try {
+            Lote lote = converter(dto);
+            lote = loteService.salvar(lote);
+            return new ResponseEntity(lote, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Lote converter(LoteDTO dto)

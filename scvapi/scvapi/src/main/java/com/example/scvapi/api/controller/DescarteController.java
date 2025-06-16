@@ -1,8 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.CompraDTO;
 import com.example.scvapi.api.dto.DescarteDTO;
-import com.example.scvapi.model.entity.Compra;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Descarte;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.DescarteService;
@@ -42,6 +41,17 @@ public class DescarteController
             return new ResponseEntity("Descarte não encontrada.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(descarte.map(DescarteDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody DescarteDTO dto) {
+        try {
+            Descarte descarte = converter(dto);
+            descarte = descarteService.salvar(descarte);
+            return new ResponseEntity(descarte, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Descarte converter(DescarteDTO dto)

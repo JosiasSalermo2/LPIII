@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.scvapi.exception.RegraNegocioException;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,17 @@ public class CompraController
             return new ResponseEntity("Compra não encontrada.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(compra.map(CompraDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody CompraDTO dto) {
+        try {
+            Compra compra = converter(dto);
+            compra = compraService.salvar(compra);
+            return new ResponseEntity(compra, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Compra converter(CompraDTO dto)

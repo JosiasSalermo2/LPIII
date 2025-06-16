@@ -1,10 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.CompraDTO;
-import com.example.scvapi.api.dto.EstoqueDTO;
 import com.example.scvapi.api.dto.FabricanteDTO;
-import com.example.scvapi.model.entity.Compra;
-import com.example.scvapi.model.entity.Estoque;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Fabricante;
 import com.example.scvapi.service.FabricanteService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +38,17 @@ public class FabricanteController
             return new ResponseEntity("Fabricante não encontrado.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(fabricante.map(FabricanteDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody FabricanteDTO dto) {
+        try {
+            Fabricante fabricante = converter(dto);
+            fabricante = fabricanteService.salvar(fabricante);
+            return new ResponseEntity(fabricante, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Fabricante converter(FabricanteDTO dto)

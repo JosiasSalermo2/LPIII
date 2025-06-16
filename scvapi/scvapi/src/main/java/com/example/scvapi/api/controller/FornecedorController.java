@@ -2,6 +2,7 @@ package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.FabricanteDTO;
 import com.example.scvapi.api.dto.FornecedorDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Fabricante;
 import com.example.scvapi.model.entity.Fornecedor;
 import com.example.scvapi.service.FornecedorService;
@@ -39,6 +40,17 @@ public class FornecedorController
             return new ResponseEntity("Fornecedor não encontrado.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(fornecedor.map(FornecedorDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody FornecedorDTO dto) {
+        try {
+            Fornecedor fornecedor = converter(dto);
+            fornecedor = fornecedorService.salvar(fornecedor);
+            return new ResponseEntity(fornecedor, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
      public Fornecedor converter(FornecedorDTO dto)

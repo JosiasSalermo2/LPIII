@@ -1,8 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.DescarteDTO;
 import com.example.scvapi.api.dto.EnderecoDTO;
-import com.example.scvapi.model.entity.Descarte;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Endereco;
 import com.example.scvapi.service.EnderecoService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +41,16 @@ public class EnderecoController
         return ResponseEntity.ok(endereco.map(EnderecoDTO::create));
     }
 
+    @PostMapping()
+    public ResponseEntity post(@RequestBody EnderecoDTO dto) {
+        try {
+            Endereco endereco = converter(dto);
+            endereco = enderecoService.salvar(endereco);
+            return new ResponseEntity(endereco, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     public Endereco converter(EnderecoDTO dto)
     {
