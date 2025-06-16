@@ -8,10 +8,16 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacienteDTO {
+    private String nome;
+    private String cpf;
+    private String email;
+    private String rg;
+    private String dataNascimento;
     private String tipoPaciente;
     private String alergia;
     private String contraindicacao;
     private String medicamentosRegulares;
+
 
     public static PacienteDTO create(Paciente paciente) {
         ModelMapper modelMapper = new ModelMapper();

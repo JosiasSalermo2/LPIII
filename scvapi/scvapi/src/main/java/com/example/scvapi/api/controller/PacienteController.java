@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.PacienteDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Paciente;
 import com.example.scvapi.service.PacienteService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,17 @@ public class PacienteController {
             return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(paciente.map(PacienteDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody PacienteDTO dto) {
+        try {
+            Paciente paciente = converter(dto);
+            paciente = service.salvar(paciente);
+            return new ResponseEntity(paciente, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Paciente converter(PacienteDTO dto){
