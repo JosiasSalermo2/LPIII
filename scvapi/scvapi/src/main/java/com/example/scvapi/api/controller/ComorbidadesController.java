@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.ComorbidadesDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Comorbidades;
 import com.example.scvapi.service.ComorbidadesService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,17 @@ public class ComorbidadesController {
             return new ResponseEntity("Comorbidade não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(comorbidades.map(ComorbidadesDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody ComorbidadesDTO dto) {
+        try {
+            Comorbidades comorbidades = converter(dto);
+            comorbidades = service.salvar(comorbidades);
+            return new ResponseEntity(comorbidades, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Comorbidades converter(ComorbidadesDTO dto){
