@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.CargoDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Cargo;
 import com.example.scvapi.model.entity.Funcionario;
 import com.example.scvapi.service.CargoService;
@@ -36,6 +37,17 @@ public class CargoController {
             return new ResponseEntity("Cargo não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(cargo.map(CargoDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody CargoDTO dto) {
+        try {
+            Cargo cargo = converter(dto);
+            cargo = service.salvar(cargo);
+            return new ResponseEntity(cargo, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Cargo converter(CargoDTO dto){
