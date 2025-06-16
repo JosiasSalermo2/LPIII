@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 public class VacinacaoDTO {
     private Long id;
-    private String dataVacinacao;
+    private String dataAplicacao;
     private Long pacienteId;
     private Long agendamentoId;
     private Long vacinaId;
