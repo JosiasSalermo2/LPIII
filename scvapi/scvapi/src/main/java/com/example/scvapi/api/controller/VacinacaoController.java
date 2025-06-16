@@ -1,6 +1,7 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.VacinacaoDTO;
+import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Agendamento;
 import com.example.scvapi.model.entity.Paciente;
 import com.example.scvapi.model.entity.Vacinacao;
@@ -39,6 +40,17 @@ public class VacinacaoController {
             return new ResponseEntity("Vacinacao não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(vacinacao.map(VacinacaoDTO::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody VacinacaoDTO dto) {
+        try {
+            Vacinacao vacinacao = converter(dto);
+            vacinacao = service.salvar(vacinacao);
+            return new ResponseEntity(vacinacao, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     public Vacinacao converter(VacinacaoDTO dto){
