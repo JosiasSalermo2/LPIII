@@ -12,7 +12,7 @@ public class AgendamentoDTO {
     private String horarioAgendamento;
     private Long pacienteId;
     private String pacienteNome;
-    private Long vacinacaoId;
+
 
     public static AgendamentoDTO create(Agendamento agendamento) {
         ModelMapper modelMapper = new ModelMapper();
