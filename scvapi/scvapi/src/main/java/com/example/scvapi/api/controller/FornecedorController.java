@@ -1,9 +1,7 @@
 package com.example.scvapi.api.controller;
 
-import com.example.scvapi.api.dto.FabricanteDTO;
 import com.example.scvapi.api.dto.FornecedorDTO;
 import com.example.scvapi.exception.RegraNegocioException;
-import com.example.scvapi.model.entity.Fabricante;
 import com.example.scvapi.model.entity.Fornecedor;
 import com.example.scvapi.service.FornecedorService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +46,21 @@ public class FornecedorController
             Fornecedor fornecedor = converter(dto);
             fornecedor = fornecedorService.salvar(fornecedor);
             return new ResponseEntity(fornecedor, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody FornecedorDTO dto) {
+        if (!fornecedorService.getFornecedorById(id).isPresent()) {
+            return new ResponseEntity("Fornecedor não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Fornecedor fornecedor = converter(dto);
+            fornecedor.setId(id);
+            fornecedorService.salvar(fornecedor);
+            return ResponseEntity.ok(fornecedor);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

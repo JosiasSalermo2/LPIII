@@ -51,6 +51,21 @@ public class EstoqueController
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody EstoqueDTO dto) {
+        if (!estoqueService.getEstoqueById(id).isPresent()) {
+            return new ResponseEntity("Estoque não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Estoque estoque = converter(dto);
+            estoque.setId(id);
+            estoqueService.salvar(estoque);
+            return ResponseEntity.ok(estoque);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Estoque converter(EstoqueDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();

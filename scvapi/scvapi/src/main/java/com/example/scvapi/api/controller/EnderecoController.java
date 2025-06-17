@@ -52,6 +52,21 @@ public class EnderecoController
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody EnderecoDTO dto) {
+        if (!enderecoService.getEnderecoById(id).isPresent()) {
+            return new ResponseEntity("Endereço não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Endereco endereco = converter(dto);
+            endereco.setId(id);
+            enderecoService.salvar(endereco);
+            return ResponseEntity.ok(endereco);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Endereco converter(EnderecoDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();

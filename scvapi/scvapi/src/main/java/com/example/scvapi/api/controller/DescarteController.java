@@ -54,6 +54,21 @@ public class DescarteController
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DescarteDTO dto) {
+        if (!descarteService.getDescarteById(id).isPresent()) {
+            return new ResponseEntity("Descarte não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Descarte descarte = converter(dto);
+            descarte.setId(id);
+            descarteService.salvar(descarte);
+            return ResponseEntity.ok(descarte);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Descarte converter(DescarteDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();

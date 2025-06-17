@@ -57,6 +57,21 @@ public class LoteController
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody LoteDTO dto) {
+        if (!loteService.getLoteById(id).isPresent()) {
+            return new ResponseEntity("Lote não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Lote lote = converter(dto);
+            lote.setId(id);
+            loteService.salvar(lote);
+            return ResponseEntity.ok(lote);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Lote converter(LoteDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();
