@@ -11,7 +11,7 @@ public class ComorbidadesDTO {
     private Long id;
     private String comorbidade;
     private String descricao;
-    private Long comorbidadeId;
+    private Long comorbidadesId;
 
     public static ComorbidadesDTO create(Comorbidades comorbidades) {
         ModelMapper modelMapper = new ModelMapper();
