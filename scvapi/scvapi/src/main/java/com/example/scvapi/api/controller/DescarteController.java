@@ -22,20 +22,20 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class DescarteController
 {
-    private final DescarteService descarteService;
+    private final DescarteService service;
     private final EstoqueService estoqueService;
 
     @GetMapping()
     public ResponseEntity get()
     {
-        List<Descarte> descartes = descarteService.getDescarte();
+        List<Descarte> descartes = service.getDescarte();
         return ResponseEntity.ok(descartes.stream().map(DescarteDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id)
     {
-        Optional<Descarte> descarte = descarteService.getDescarteById(id);
+        Optional<Descarte> descarte = service.getDescarteById(id);
         if (!descarte.isPresent())
         {
             return new ResponseEntity("Descarte não encontrada.", HttpStatus.NOT_FOUND);
@@ -47,7 +47,7 @@ public class DescarteController
     public ResponseEntity post(@RequestBody DescarteDTO dto) {
         try {
             Descarte descarte = converter(dto);
-            descarte = descarteService.salvar(descarte);
+            descarte = service.salvar(descarte);
             return new ResponseEntity(descarte, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -56,14 +56,14 @@ public class DescarteController
 
     @PutMapping("{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DescarteDTO dto) {
-        if (!descarteService.getDescarteById(id).isPresent()) {
+        if (!service.getDescarteById(id).isPresent()) {
             return new ResponseEntity("Descarte não encontrado", HttpStatus.NOT_FOUND);
         }
         try {
             Descarte descarte = converter(dto);
             descarte.setId(id);
-            descarteService.salvar(descarte);
-            return ResponseEntity.ok(descarte);
+            service.salvar(descarte);
+            return ResponseEntity.ok(DescarteDTO.create(descarte));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
