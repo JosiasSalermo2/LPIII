@@ -16,8 +16,6 @@ public class EnderecoDTO {
     private String cidade;
     private String uf;
     private String cep;
-    private String pais;
-    private Long pacienteId;
 
     public static EnderecoDTO create(Endereco endereco) {
         ModelMapper modelMapper = new ModelMapper();

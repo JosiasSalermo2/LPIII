@@ -4,6 +4,7 @@ import com.example.scvapi.api.dto.EstoqueDTO;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.service.EstoqueService;
+import com.example.scvapi.service.FabricanteService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class EstoqueController
 {
     private final EstoqueService estoqueService;
+    private final FabricanteService fabricanteService;
 
     @GetMapping()
     public ResponseEntity get()
@@ -45,7 +47,7 @@ public class EstoqueController
         try {
             Estoque estoque = converter(dto);
             estoque = estoqueService.salvar(estoque);
-            return new ResponseEntity(estoque, HttpStatus.CREATED);
+            return new ResponseEntity(EstoqueDTO.create(estoque), HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -60,7 +62,7 @@ public class EstoqueController
             Estoque estoque = converter(dto);
             estoque.setId(id);
             estoqueService.salvar(estoque);
-            return ResponseEntity.ok(estoque);
+            return ResponseEntity.ok(EstoqueDTO.create(estoque));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -70,6 +72,10 @@ public class EstoqueController
     {
         ModelMapper modelMapper = new ModelMapper();
         Estoque estoque = modelMapper.map(dto, Estoque.class);
+
+        if(dto.getFabricanteId() != null){
+            fabricanteService.getFabricanteById(dto.getFabricanteId()).ifPresent(estoque::setFabricante);
+        }
         return estoque;
     }
 }

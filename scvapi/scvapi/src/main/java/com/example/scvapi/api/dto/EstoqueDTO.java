@@ -10,17 +10,27 @@ import org.modelmapper.ModelMapper;
 public class EstoqueDTO {
     private Long id;
     private String nome;
-    private String fabricante;
     private int quantidadeDisponivel;
     private int quantidadeMinima;
-    private String dataValidade;
-    private Long vacinacaoId;
-    private Long descarteId;
-    private Long funcionarioId;
+    private int quantidadeMaxima;
+    private int pontoRessuprimento;
+    private Long fabricanteId;
+    private String fabricanteNome;
+
+
+    // private String dataValidade;
+    // private Long vacinacaoId;
+    // private Long descarteId;
 
     public static EstoqueDTO create(Estoque estoque) {
         ModelMapper modelMapper = new ModelMapper();
         EstoqueDTO dto = modelMapper.map(estoque, EstoqueDTO.class);
+
+        if (estoque.getFabricante() != null) {
+            dto.fabricanteId = estoque.getFabricante().getId();
+            dto.fabricanteNome = estoque.getFabricante().getNomeFantasia(); // ou getNome() se for assim
+        }
+
         return dto;
     }
 }
