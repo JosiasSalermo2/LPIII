@@ -4,14 +4,16 @@ import com.example.scvapi.model.entity.Lote;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoteDTO {
     private Long id;
-    private String dataVacina;
+    private LocalDate dataValidade;
     private String numeroLote;
-    private int numeroVacinas;
+    private int numeroAmpola;
     private int dosesAmpola;
     private Long compraId;
     private Long vacinaId;

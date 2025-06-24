@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class Lote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String dataValidade;
+    private LocalDate dataValidade;
     private String numeroLote;
     private int numeroAmpola;
     private int dosesAmpola;
