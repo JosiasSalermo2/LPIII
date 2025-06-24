@@ -66,6 +66,20 @@ public class TipoVacinaController
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<TipoVacina> tipoVacina = tipoVacinaService.getTipoVacinaById(id);
+        if (!tipoVacina.isPresent()) {
+            return new ResponseEntity("Tipo de vacina não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        try {
+            tipoVacinaService.excluir(tipoVacina.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public TipoVacina converter(TipoVacinaDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();

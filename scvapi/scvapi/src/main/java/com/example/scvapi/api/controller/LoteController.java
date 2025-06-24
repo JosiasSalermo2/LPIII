@@ -72,6 +72,20 @@ public class LoteController
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Lote> lote = loteService.getLoteById(id);
+        if (!lote.isPresent()) {
+            return new ResponseEntity("Lote não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        try {
+            loteService.excluir(lote.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Lote converter(LoteDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();
