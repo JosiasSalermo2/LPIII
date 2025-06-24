@@ -15,7 +15,6 @@ public class VacinacaoDTO {
     private String pacienteNome;
     private String tipoSanguineo;
     private String alergia;
-    private String contraIndicacao;
     private String medicamentosRegulares;
 
     private Long agendamentoId;
@@ -31,7 +30,6 @@ public class VacinacaoDTO {
         dto.pacienteNome = vacinacao.getPaciente().getNome();
         dto.tipoSanguineo = vacinacao.getPaciente().getTipoSanguineo();
         dto.alergia = vacinacao.getPaciente().getAlergia();
-        dto.contraIndicacao = vacinacao.getPaciente().getContraIndicacao();
         dto.medicamentosRegulares = vacinacao.getPaciente().getMedicamentosRegulares();
         return dto;
     }
