@@ -48,6 +48,21 @@ public class TelefoneController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody TelefoneDTO dto) {
+        if (!service.getTelefoneById(id).isPresent()) {
+            return new ResponseEntity("Telefone não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Telefone telefone = converter(dto);
+            telefone.setId(id);
+            service.salvar(telefone);
+            return ResponseEntity.ok(telefone);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Telefone converter(TelefoneDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Telefone telefone = modelMapper.map(dto, Telefone.class);
