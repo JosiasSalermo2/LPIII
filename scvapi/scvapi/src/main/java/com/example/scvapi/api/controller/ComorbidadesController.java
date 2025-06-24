@@ -62,6 +62,20 @@ public class ComorbidadesController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+       Optional<Comorbidades> comorbidades = service.getComorbidadesById(id);
+        if (!comorbidades.isPresent()) {
+            return new ResponseEntity("Comorbidade não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(comorbidades.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Comorbidades converter(ComorbidadesDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Comorbidades comorbidades = modelMapper.map(dto, Comorbidades.class);

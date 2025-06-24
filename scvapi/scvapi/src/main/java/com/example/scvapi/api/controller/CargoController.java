@@ -65,6 +65,20 @@ public class CargoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+       Optional<Cargo> cargo = service.getCargoById(id);
+        if (!cargo.isPresent()) {
+            return new ResponseEntity("Cargo não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(cargo.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Cargo converter(CargoDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Cargo cargo = modelMapper.map(dto, Cargo.class);
