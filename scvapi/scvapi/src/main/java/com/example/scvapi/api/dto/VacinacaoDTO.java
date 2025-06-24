@@ -10,15 +10,29 @@ import org.modelmapper.ModelMapper;
 public class VacinacaoDTO {
     private Long id;
     private String dataAplicacao;
+
     private Long pacienteId;
+    private String pacienteNome;
+    private String tipoSanguineo;
+    private String alergia;
+    private String contraIndicacao;
+    private String medicamentosRegulares;
+
     private Long agendamentoId;
-    private Long vacinaId;
+
 
     public static VacinacaoDTO create(Vacinacao vacinacao) {
         ModelMapper modelMapper = new ModelMapper();
         VacinacaoDTO dto = modelMapper.map(vacinacao, VacinacaoDTO.class);
+
         dto.pacienteId = vacinacao.getPaciente().getId();
         dto.agendamentoId = vacinacao.getAgendamento().getId();
+
+        dto.pacienteNome = vacinacao.getPaciente().getNome();
+        dto.tipoSanguineo = vacinacao.getPaciente().getTipoSanguineo();
+        dto.alergia = vacinacao.getPaciente().getAlergia();
+        dto.contraIndicacao = vacinacao.getPaciente().getContraIndicacao();
+        dto.medicamentosRegulares = vacinacao.getPaciente().getMedicamentosRegulares();
         return dto;
     }
 }

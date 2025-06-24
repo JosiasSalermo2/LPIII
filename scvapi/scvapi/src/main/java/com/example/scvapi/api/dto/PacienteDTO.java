@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacienteDTO {
+    private Long id;
     private String nome;
     private String cpf;
     private String email;
