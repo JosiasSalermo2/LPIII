@@ -67,6 +67,20 @@ public class EnderecoController
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Endereco> endereco = enderecoService.getEnderecoById(id);
+        if (!endereco.isPresent()) {
+            return new ResponseEntity("Endereço não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        try {
+            enderecoService.excluir(endereco.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Endereco converter(EnderecoDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();

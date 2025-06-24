@@ -66,6 +66,20 @@ public class FabricanteController
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Fabricante> fabricante = fabricanteService.getFabricanteById(id);
+        if (!fabricante.isPresent()) {
+            return new ResponseEntity("Fabricante não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        try {
+            fabricanteService.excluir(fabricante.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Fabricante converter(FabricanteDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();

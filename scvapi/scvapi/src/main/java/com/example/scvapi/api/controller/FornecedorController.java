@@ -66,6 +66,20 @@ public class FornecedorController
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Fornecedor> fornecedor = fornecedorService.getFornecedorById(id);
+        if (!fornecedor.isPresent()) {
+            return new ResponseEntity("Fornecedor não encontrado.", HttpStatus.NOT_FOUND);
+        }
+        try {
+            fornecedorService.excluir(fornecedor.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
      public Fornecedor converter(FornecedorDTO dto)
      {
          ModelMapper modelMapper = new ModelMapper();

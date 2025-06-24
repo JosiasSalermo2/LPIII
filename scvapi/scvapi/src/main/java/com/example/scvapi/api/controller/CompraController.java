@@ -72,6 +72,20 @@ public class CompraController
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Compra> compra = compraService.getCompraById(id);
+        if (!compra.isPresent()) {
+            return new ResponseEntity("Compra não encontrada.", HttpStatus.NOT_FOUND);
+        }
+        try {
+            compraService.excluir(compra.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Compra converter(CompraDTO dto)
     {
         ModelMapper modelMapper = new ModelMapper();
