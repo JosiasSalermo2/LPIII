@@ -16,7 +16,7 @@ public class Paciente extends PessoaFisica {
 
     private String tipoSanguineo;
     private String alergia;
-    private String contraindicacao;
+    private String contraIndicacao;
     private String medicamentosRegulares;
 
 

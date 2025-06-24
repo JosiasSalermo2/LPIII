@@ -13,9 +13,9 @@ public class PacienteDTO {
     private String email;
     private String rg;
     private String dataNascimento;
-    private String tipoPaciente;
+    private String tipoSanguineo;
     private String alergia;
-    private String contraindicacao;
+    private String contraIndicacao;
     private String medicamentosRegulares;
 
 

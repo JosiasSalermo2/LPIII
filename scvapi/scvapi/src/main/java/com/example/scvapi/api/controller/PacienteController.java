@@ -48,6 +48,21 @@ public class PacienteController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody PacienteDTO dto) {
+        if (!service.getPacienteById(id).isPresent()) {
+            return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Paciente paciente = converter(dto);
+            paciente.setId(id);
+            service.salvar(paciente);
+            return ResponseEntity.ok(paciente);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Paciente converter(PacienteDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Paciente paciente = modelMapper.map(dto, Paciente.class);
