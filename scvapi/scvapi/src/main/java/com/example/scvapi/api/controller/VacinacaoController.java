@@ -68,6 +68,20 @@ public class VacinacaoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Vacinacao> vacinacao = service.getVacinacaoById(id);
+        if (!vacinacao.isPresent()) {
+            return new ResponseEntity("Vacinacao não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.excluir(vacinacao.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Vacinacao converter(VacinacaoDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Vacinacao vacinacao = modelMapper.map(dto, Vacinacao.class);
