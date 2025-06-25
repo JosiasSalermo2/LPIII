@@ -65,6 +65,20 @@ public class UsuarioController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Usuario> usuario = service.getUsuarioById(id);
+        if(!usuario.isPresent()){
+            return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.excluir(usuario.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Usuario converter(UsuarioDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Usuario usuario = modelMapper.map(dto, Usuario.class);
