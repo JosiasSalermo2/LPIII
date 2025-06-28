@@ -51,5 +51,9 @@ public class AgendamentoService
         if (agendamento.getHorarioAgendamento() == null || agendamento.getHorarioAgendamento().trim().equals("")) {
             throw new RegraNegocioException("Horário inválido");
         }
+        if (agendamento.getPaciente() == null || agendamento.getPaciente().getId() == null) {
+            throw new RegraNegocioException("Paciente inválido");
+        }
+
     }
 }
