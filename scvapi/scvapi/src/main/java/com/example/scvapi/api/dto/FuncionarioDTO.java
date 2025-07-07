@@ -18,10 +18,14 @@ public class FuncionarioDTO {
     private String especialidade;
     private String registroConselho;
     private Double salario;
+    private Long cargoId;
+    private String cargoNome;
 
     public static FuncionarioDTO create(Funcionario funcionario) {
         ModelMapper modelMapper = new ModelMapper();
         FuncionarioDTO dto = modelMapper.map(funcionario, FuncionarioDTO.class);
+        dto.cargoId = funcionario.getCargo().getId();
+        dto.cargoNome = funcionario.getCargo().getCargo();
         return dto;
     }
 }

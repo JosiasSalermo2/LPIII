@@ -1,8 +1,11 @@
 package com.example.scvapi.api.controller;
 
+import com.example.scvapi.api.dto.EstoqueDTO;
 import com.example.scvapi.api.dto.FuncionarioDTO;
 import com.example.scvapi.exception.RegraNegocioException;
+import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.model.entity.Funcionario;
+import com.example.scvapi.service.CargoService;
 import com.example.scvapi.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class FuncionarioController {
     private final FuncionarioService service;
+    private final CargoService cargoService;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -76,9 +80,14 @@ public class FuncionarioController {
         }
     }
 
-    public Funcionario converter(FuncionarioDTO dto){
+    public Funcionario converter(FuncionarioDTO dto)
+    {
         ModelMapper modelMapper = new ModelMapper();
         Funcionario funcionario = modelMapper.map(dto, Funcionario.class);
+
+        if(dto.getCargoId() != null){
+            cargoService.getCargoById(dto.getCargoId()).ifPresent(funcionario::setCargo);
+        }
         return funcionario;
     }
 }

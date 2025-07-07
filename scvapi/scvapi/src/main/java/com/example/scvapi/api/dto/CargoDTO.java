@@ -16,7 +16,6 @@ public class CargoDTO {
     public static CargoDTO create(Cargo cargo) {
         ModelMapper modelMapper = new ModelMapper();
         CargoDTO dto = modelMapper.map(cargo, CargoDTO.class);
-        dto.funcionarioNome = cargo.getFuncionario().getNome();
         return dto;
     }
 }
