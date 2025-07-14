@@ -19,7 +19,4 @@ public class Usuario {
     private String login;
     private String cpf;
     private boolean administrador;
-
-    @ManyToOne
-    private Funcionario funcionario;
 }

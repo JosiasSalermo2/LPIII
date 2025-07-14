@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class UsuarioController {
     private final UsuarioService service;
-    private final FuncionarioService funcionarioService;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -82,14 +81,6 @@ public class UsuarioController {
     public Usuario converter(UsuarioDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Usuario usuario = modelMapper.map(dto, Usuario.class);
-        if(dto.getFuncionarioId() != null) {
-            Optional<Funcionario> funcionario = funcionarioService.getFuncionarioById(dto.getFuncionarioId());
-            if(!funcionario.isPresent()) {
-                usuario.setFuncionario(null);
-        }else{
-                usuario.setFuncionario(funcionario.get());
-            }
-    }
         return usuario;
 
 }
