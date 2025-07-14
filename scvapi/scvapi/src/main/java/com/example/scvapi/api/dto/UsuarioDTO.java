@@ -11,7 +11,6 @@ public class UsuarioDTO {
     private String login;
     private String cpf;
     private boolean administrador;
-    private Long funcionarioId;
 
     public static UsuarioDTO create(Usuario usuario) {
         ModelMapper modelMapper = new ModelMapper();
