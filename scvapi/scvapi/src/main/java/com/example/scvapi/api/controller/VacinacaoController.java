@@ -3,9 +3,11 @@ package com.example.scvapi.api.controller;
 import com.example.scvapi.api.dto.VacinacaoDTO;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Agendamento;
+import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.model.entity.Paciente;
 import com.example.scvapi.model.entity.Vacinacao;
 import com.example.scvapi.service.AgendamentoService;
+import com.example.scvapi.service.EstoqueService;
 import com.example.scvapi.service.PacienteService;
 import com.example.scvapi.service.VacinacaoService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class VacinacaoController {
     private final VacinacaoService service;
     private final PacienteService pacienteService;
     private final AgendamentoService agendamentoService;
+    private final EstoqueService estoqueService;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -99,6 +102,14 @@ public class VacinacaoController {
                 vacinacao.setAgendamento(null);
             }else{
                 vacinacao.setAgendamento(agendamento.get());
+            }
+        }
+        if(dto.getEstoqueId() != null) {
+            Optional<Estoque> estoque = estoqueService.getEstoqueById(dto.getEstoqueId());
+            if(!estoque.isPresent()) {
+                vacinacao.setEstoque(null);
+            }else{
+                vacinacao.setEstoque(estoque.get());
             }
         }
         return vacinacao;

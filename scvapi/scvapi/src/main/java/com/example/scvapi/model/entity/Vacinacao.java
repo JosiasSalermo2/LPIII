@@ -24,4 +24,7 @@ public class Vacinacao {
 
     @ManyToOne
     private Agendamento agendamento;
+
+    @ManyToOne
+    private Estoque estoque;
 }

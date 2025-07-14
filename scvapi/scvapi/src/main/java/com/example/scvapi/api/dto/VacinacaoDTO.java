@@ -18,6 +18,8 @@ public class VacinacaoDTO {
     private String medicamentosRegulares;
 
     private Long agendamentoId;
+    private Long estoqueId;
+    private String estoqueNome;
 
 
     public static VacinacaoDTO create(Vacinacao vacinacao) {
@@ -26,11 +28,13 @@ public class VacinacaoDTO {
 
         dto.pacienteId = vacinacao.getPaciente().getId();
         dto.agendamentoId = vacinacao.getAgendamento().getId();
+        dto.estoqueId = vacinacao.getEstoque().getId();
 
         dto.pacienteNome = vacinacao.getPaciente().getNome();
         dto.tipoSanguineo = vacinacao.getPaciente().getTipoSanguineo();
         dto.alergia = vacinacao.getPaciente().getAlergia();
         dto.medicamentosRegulares = vacinacao.getPaciente().getMedicamentosRegulares();
+        dto.estoqueNome = vacinacao.getEstoque().getNome();
         return dto;
     }
 }
