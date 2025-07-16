@@ -30,4 +30,5 @@ public class Lote {
 
     @ManyToOne
     private Estoque estoque;
+
 }
