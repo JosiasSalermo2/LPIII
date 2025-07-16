@@ -18,17 +18,13 @@ public class EstoqueDTO {
     private String fabricanteNome;
 
 
-    // private String dataValidade;
-    // private Long vacinacaoId;
-    // private Long descarteId;
-
     public static EstoqueDTO create(Estoque estoque) {
         ModelMapper modelMapper = new ModelMapper();
         EstoqueDTO dto = modelMapper.map(estoque, EstoqueDTO.class);
 
         if (estoque.getFabricante() != null) {
             dto.fabricanteId = estoque.getFabricante().getId();
-            dto.fabricanteNome = estoque.getFabricante().getNomeFantasia(); // ou getNome() se for assim
+            dto.fabricanteNome = estoque.getFabricante().getNomeFantasia();
         }
 
         return dto;

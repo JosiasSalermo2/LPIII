@@ -20,6 +20,8 @@ public class Estoque {
     private int quantidadeMinima;
     private int quantidadeMaxima;
     private int pontoRessuprimento;
+    private int quantidadeDisponivel;
+
 
     @ManyToOne
     private Fabricante fabricante;

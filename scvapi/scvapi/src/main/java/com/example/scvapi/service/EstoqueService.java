@@ -43,8 +43,30 @@ public class EstoqueService
         repository.delete(estoque);
     }
 
-    private void validar(Estoque estoque)
-    {
-        //aqui é para validar os campos obrigatórios
+    private void validar(Estoque estoque) {
+        if (estoque.getNome() == null || estoque.getNome().trim().isEmpty()) {
+            throw new RegraNegocioException("O nome do produto é obrigatório.");
+        }
+
+        if (estoque.getQuantidadeDisponivel() < 0) {
+            throw new RegraNegocioException("Quantidade disponível é obrigatória.");
+        }
+
+        if (estoque.getQuantidadeMinima() < 0) {
+            throw new RegraNegocioException("Quantidade mínima é obrigatória.");
+        }
+
+        if (estoque.getQuantidadeMaxima() <= 0) {
+            throw new RegraNegocioException("Quantidade máxima é obrigatória.");
+        }
+
+        if (estoque.getPontoRessuprimento() < 0) {
+            throw new RegraNegocioException("Ponto de ressuprimento é obrigatório.");
+        }
+
+        if (estoque.getFabricante() == null || estoque.getFabricante().getId() == null) {
+            throw new RegraNegocioException("Fabricante é obrigatório.");
+        }
     }
+
 }
