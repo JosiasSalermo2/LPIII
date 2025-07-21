@@ -54,6 +54,9 @@ public class AgendamentoService
         if (agendamento.getPaciente() == null || agendamento.getPaciente().getId() == null) {
             throw new RegraNegocioException("Paciente inválido");
         }
+        if (agendamento.getVacina() == null || agendamento.getVacina().getId() == null) {
+            throw new RegraNegocioException("Vacina inválida");
+        }
 
     }
 }

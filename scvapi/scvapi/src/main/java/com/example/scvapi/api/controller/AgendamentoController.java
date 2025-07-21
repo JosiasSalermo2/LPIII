@@ -4,9 +4,11 @@ import com.example.scvapi.api.dto.AgendamentoDTO;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Agendamento;
 import com.example.scvapi.model.entity.Paciente;
+import com.example.scvapi.model.entity.Vacina;
 import com.example.scvapi.model.entity.Vacinacao;
 import com.example.scvapi.service.AgendamentoService;
 import com.example.scvapi.service.PacienteService;
+import com.example.scvapi.service.VacinaService;
 import com.example.scvapi.service.VacinacaoService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,6 +28,7 @@ public class AgendamentoController {
     private final AgendamentoService service;
     private final PacienteService pacienteService;
     private final VacinacaoService vacinacaoService;
+    private final VacinaService vacinaService;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -92,6 +95,14 @@ public class AgendamentoController {
                 agendamento.setPaciente(null);
             }else{
                 agendamento.setPaciente(paciente.get());
+            }
+        }
+        if (dto.getVacinaId() != null) {
+            Optional<Vacina> vacina = vacinaService.getVacinaById(dto.getVacinaId());
+            if(!vacina.isPresent()) {
+                agendamento.setVacina(null);
+            }else{
+                agendamento.setVacina(vacina.get());
             }
         }
         return agendamento;
