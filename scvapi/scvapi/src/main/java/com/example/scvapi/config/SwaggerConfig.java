@@ -1,4 +1,4 @@
-package com.example.saaapi.config;
+package com.example.scvapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
