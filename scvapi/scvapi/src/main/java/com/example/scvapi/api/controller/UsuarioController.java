@@ -11,6 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import javax.validation.Valid;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +42,13 @@ public class UsuarioController {
     }
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<?> post(@RequestBody @Valid UsuarioDTO dto, BindingResult result) {
+        // Validação dos campos com @Valid
+        if (result.hasErrors()) {
+            String erro = result.getAllErrors().get(0).getDefaultMessage(); // Pega só o primeiro erro
+            return ResponseEntity.badRequest().body(erro);
+        }
+
         try {
             Usuario usuario = converter(dto);
             usuario = service.salvar(usuario);
@@ -50,7 +59,12 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody UsuarioDTO dto) {
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody @Valid UsuarioDTO dto, BindingResult result) {
+        if (result.hasErrors()) {
+            String erro = result.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(erro);
+        }
+
         if (!service.getUsuarioById(id).isPresent()) {
             return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
