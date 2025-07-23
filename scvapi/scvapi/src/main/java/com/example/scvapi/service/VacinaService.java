@@ -45,10 +45,10 @@ public class VacinaService {
         if (vacina.getVacina() == null || vacina.getVacina().trim().isEmpty()) {
             throw new RegraNegocioException("O nome da vacina é obrigatório.");
         }
-
+/*
         if (vacina.getDosesAmpola() == null || vacina.getDosesAmpola() <= 0) {
             throw new RegraNegocioException("A quantidade de doses por ampola deve ser maior que zero.");
-        }
+        }*/
 
         if (vacina.getIndicacao() == null || vacina.getIndicacao().trim().isEmpty()){
             throw new RegraNegocioException("A indicação da vacina é obrigatória.");
@@ -65,7 +65,7 @@ public class VacinaService {
         if (vacina.getFornecedor() == null || vacina.getFornecedor().getId() == null) {
             throw new RegraNegocioException("O fornecedor da vacina deve ser informado.");
         }
-
+/*
         if (vacina.getTipoVacina() == null || vacina.getTipoVacina().getId() == null) {
             throw new RegraNegocioException("Tipo da vacina deve ser informado.");
         }
@@ -73,7 +73,7 @@ public class VacinaService {
         if (repository.existsByVacinaIgnoreCase(vacina.getVacina())) {
             throw new RegraNegocioException("Já existe uma vacina cadastrada com este nome.");
         }
-
+*/
         vacina.setVacina(vacina.getVacina().trim().toUpperCase());
     }
 }
