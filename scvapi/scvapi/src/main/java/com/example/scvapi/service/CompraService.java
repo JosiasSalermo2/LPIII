@@ -62,8 +62,14 @@ public class CompraService
         }
         if (compra.getDataCompra() == null || compra.getDataCompra().equals("")) {
             throw new RegraNegocioException("Data inválida");
-
         }
+        if (compra.getVacina() == null || compra.getVacina().equals("")) {
+            throw new RegraNegocioException("Vacina inválida");
+        }
+        if (compra.getQuantidadeVacina() == 0 || compra.getQuantidadeVacina() < 0) {
+            throw new RegraNegocioException("Quantidade de vacina inválida.");
+        }
+
 
         //Falta validar Telefone e Endereço (Essas classes não tem relação no código com Compra) e, por isso, os objetos não aparecem
         //As classes Vacina e TipoVacina também não estão relacionadas com Compra, e os objetos também não aparecem.

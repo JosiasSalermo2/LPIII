@@ -17,6 +17,8 @@ public class CompraDTO {
     private String fabricanteCNPJ;
     private Long fabricanteId;
     private String fabricanteNome;
+    private Long vacinaId;
+    private String vacinaNome;
 
     public static CompraDTO create(Compra compra) {
         ModelMapper modelMapper = new ModelMapper();
@@ -25,6 +27,8 @@ public class CompraDTO {
         dto.fornecedorNome = compra.getFornecedor().getNomeFantasia();
         dto.fabricanteCNPJ = compra.getFornecedor().getCnpj();
         dto.fabricanteNome = compra.getFabricante().getNomeFantasia();
+        dto.vacinaId = compra.getVacina().getId();
+        dto.vacinaNome = compra.getVacina().getVacina();
         return dto;
     }
 }

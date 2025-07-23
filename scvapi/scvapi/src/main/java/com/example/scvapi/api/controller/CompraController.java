@@ -4,9 +4,11 @@ import com.example.scvapi.api.dto.CompraDTO;
 import com.example.scvapi.model.entity.Compra;
 import com.example.scvapi.model.entity.Fabricante;
 import com.example.scvapi.model.entity.Fornecedor;
+import com.example.scvapi.model.entity.Vacina;
 import com.example.scvapi.service.CompraService;
 import com.example.scvapi.service.FabricanteService;
 import com.example.scvapi.service.FornecedorService;
+import com.example.scvapi.service.VacinaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class CompraController
     private final CompraService compraService;
     private final FornecedorService fornecedorService;
     private final FabricanteService fabricanteService;
+    private final VacinaService vacinaService;
 
     @GetMapping()
     public ResponseEntity get()
@@ -112,6 +115,18 @@ public class CompraController
             else
             {
                 compra.setFabricante(fabricante.get());
+            }
+        }
+        if (dto.getVacinaId() != null)
+        {
+            Optional<Vacina> vacina = vacinaService.getVacinaById(dto.getVacinaId());
+            if (!vacina.isPresent())
+            {
+                compra.setVacina(null);
+            }
+            else
+            {
+                compra.setVacina(vacina.get());
             }
         }
         return compra;

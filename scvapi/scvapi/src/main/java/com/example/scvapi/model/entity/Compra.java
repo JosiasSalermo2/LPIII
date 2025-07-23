@@ -18,10 +18,14 @@ public class Compra {
 
     private double valor;
     private String dataCompra;
+    private int quantidadeVacina;
 
     @ManyToOne
     private Fornecedor fornecedor;
 
     @ManyToOne
     private Fabricante fabricante;
+
+    @ManyToOne
+    private Vacina vacina;
 }
