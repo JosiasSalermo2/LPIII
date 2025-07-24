@@ -20,9 +20,26 @@ public class VacinaDTO {
     public static VacinaDTO create(Vacina vacina) {
         ModelMapper modelMapper = new ModelMapper();
         VacinaDTO dto = modelMapper.map(vacina, VacinaDTO.class);
+        /*
         dto.tipoVacinaId = vacina.getId();
         dto.fornecedorId = vacina.getFornecedor().getId();
         dto.fabricanteId = vacina.getFabricante().getId();
+        */
+
+        if (vacina.getTipoVacinaDescricao() != null) {
+            dto.setTipoVacinaId(vacina.getTipoVacinaDescricao().getId());
+        }
+
+        if (vacina.getFornecedor() != null) {
+            dto.setFornecedorId(vacina.getFornecedor().getId());
+        }
+
+        if (vacina.getFabricante() != null) {
+            dto.setFabricanteId(vacina.getFabricante().getId());
+        }
+
         return dto;
+
+
     }
 }
