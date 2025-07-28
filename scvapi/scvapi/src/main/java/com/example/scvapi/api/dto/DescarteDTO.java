@@ -13,12 +13,16 @@ public class DescarteDTO {
     private String nome;
     private int quantidadeDescartes;
     private Long estoqueId;
+    private String estoqueNome;
+    private int quantidadeDisponivel;
 
     public static DescarteDTO create(Descarte descarte) {
         ModelMapper modelMapper = new ModelMapper();
         DescarteDTO dto = modelMapper.map(descarte, DescarteDTO.class);
 
         dto.estoqueId = descarte.getEstoque().getId();
+        dto.quantidadeDescartes = descarte.getQuantidadeDescarte();
+        dto.quantidadeDisponivel = descarte.getEstoque().getQuantidadeDisponivel();
 
         return dto;
     }
