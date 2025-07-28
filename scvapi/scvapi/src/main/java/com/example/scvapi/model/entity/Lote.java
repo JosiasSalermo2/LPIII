@@ -17,7 +17,7 @@ public class Lote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dataValidade;
+    private String dataValidade;
     private String numeroLote;
     private int numeroAmpola;
     private int dosesAmpola;

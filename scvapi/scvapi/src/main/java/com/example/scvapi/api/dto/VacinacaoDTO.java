@@ -1,8 +1,11 @@
 package com.example.scvapi.api.dto;
 import com.example.scvapi.model.entity.Agendamento;
 import com.example.scvapi.model.entity.Vacinacao;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.modelmapper.ModelMapper;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
