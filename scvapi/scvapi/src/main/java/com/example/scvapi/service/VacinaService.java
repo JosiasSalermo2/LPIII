@@ -3,6 +3,8 @@ package com.example.scvapi.service;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Vacina;
 import com.example.scvapi.repository.VacinaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -12,7 +14,9 @@ import java.util.Optional;
 
 @Service
 public class VacinaService {
+    @Autowired
     private final VacinaRepository repository;
+
 
 
 
@@ -37,7 +41,12 @@ public class VacinaService {
     @Transactional
     public void excluir(Vacina vacina){
         Objects.requireNonNull(vacina.getId());
-        repository.delete(vacina);
+
+        try{
+            repository.delete(vacina);
+        } catch (DataIntegrityViolationException e){
+            throw new  RegraNegocioException("Não é possível excluir a vacina. Existem registros vinculados.");
+        }
     }
 
     private void validar(Vacina vacina)
@@ -45,10 +54,6 @@ public class VacinaService {
         if (vacina.getVacina() == null || vacina.getVacina().trim().isEmpty()) {
             throw new RegraNegocioException("O nome da vacina é obrigatório.");
         }
-/*
-        if (vacina.getDosesAmpola() == null || vacina.getDosesAmpola() <= 0) {
-            throw new RegraNegocioException("A quantidade de doses por ampola deve ser maior que zero.");
-        }*/
 
         if (vacina.getIndicacao() == null || vacina.getIndicacao().trim().isEmpty()){
             throw new RegraNegocioException("A indicação da vacina é obrigatória.");
@@ -58,6 +63,14 @@ public class VacinaService {
             throw new RegraNegocioException("A contra indicação da vacina é obrigatória.");
         }
 
+        if (vacina.getDosesAmpola() <= 0){
+            throw new RegraNegocioException("A quantidade de doses por ampola deve ser maior que zero.");
+        }
+
+        if (vacina.getTipoVacina() == null || vacina.getTipoVacina().getId() == null){
+            throw new RegraNegocioException("Tipo da vacina deve ser informado.");
+        }
+
         if (vacina.getFabricante() == null || vacina.getFabricante().getId() == null) {
             throw new RegraNegocioException("Fabricante inválido");
         }
@@ -65,15 +78,7 @@ public class VacinaService {
         if (vacina.getFornecedor() == null || vacina.getFornecedor().getId() == null) {
             throw new RegraNegocioException("O fornecedor da vacina deve ser informado.");
         }
-/*
-        if (vacina.getTipoVacina() == null || vacina.getTipoVacina().getId() == null) {
-            throw new RegraNegocioException("Tipo da vacina deve ser informado.");
-        }
 
-        if (repository.existsByVacinaIgnoreCase(vacina.getVacina())) {
-            throw new RegraNegocioException("Já existe uma vacina cadastrada com este nome.");
-        }
-*/
         vacina.setVacina(vacina.getVacina().trim().toUpperCase());
     }
 }

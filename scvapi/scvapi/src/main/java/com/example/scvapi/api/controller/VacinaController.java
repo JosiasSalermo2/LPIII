@@ -43,7 +43,7 @@ public class VacinaController
         {
             return new ResponseEntity("Vacina não encontrada.", HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(vacina.map(VacinaDTO::create));
+        return ResponseEntity.ok(VacinaDTO.create(vacina.get()));
     }
 
     @PostMapping()
@@ -95,11 +95,11 @@ public class VacinaController
             Optional<TipoVacina> tipoVacina = tipoVacinaService.getTipoVacinaById(dto.getTipoVacinaId());
             if(!tipoVacina.isPresent())
             {
-                vacina.setTipoVacinaDescricao(null);
+                vacina.setTipoVacina(null);
             }
             else
             {
-                vacina.setTipoVacinaDescricao(tipoVacina.get());
+                vacina.setTipoVacina(tipoVacina.get());
             }
         }
         if (dto.getFornecedorId() != null)

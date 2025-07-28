@@ -22,7 +22,7 @@ public class Vacina {
     private int dosesAmpola;
 
     @ManyToOne
-    private TipoVacina tipoVacinaDescricao;
+    private TipoVacina tipoVacina;
 
     @ManyToOne
     private Fornecedor fornecedor;
