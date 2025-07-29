@@ -3,7 +3,6 @@ package com.example.scvapi.service;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Vacina;
 import com.example.scvapi.repository.VacinaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -14,12 +13,8 @@ import java.util.Optional;
 
 @Service
 public class VacinaService {
-    @Autowired
-    private final VacinaRepository repository;
 
-
-
-
+    private VacinaRepository repository;
     public VacinaService(VacinaRepository repository) {
         this.repository = repository;
     }
