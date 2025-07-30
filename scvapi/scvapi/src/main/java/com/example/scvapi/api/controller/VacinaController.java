@@ -43,7 +43,7 @@ public class VacinaController
         {
             return new ResponseEntity("Vacina não encontrada.", HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(VacinaDTO.create(vacina.get()));
+        return ResponseEntity.ok(vacina.map(VacinaDTO::create));
     }
 
     @PostMapping()
