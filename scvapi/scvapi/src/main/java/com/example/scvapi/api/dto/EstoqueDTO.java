@@ -21,12 +21,8 @@ public class EstoqueDTO {
     public static EstoqueDTO create(Estoque estoque) {
         ModelMapper modelMapper = new ModelMapper();
         EstoqueDTO dto = modelMapper.map(estoque, EstoqueDTO.class);
-
-        if (estoque.getFabricante() != null) {
-            dto.fabricanteId = estoque.getFabricante().getId();
-            dto.fabricanteNome = estoque.getFabricante().getNomeFantasia();
-        }
-
+        dto.fabricanteId = estoque.getFabricante().getId();
+        dto.fabricanteNome = estoque.getFabricante().getNomeFantasia();
         return dto;
     }
 }
