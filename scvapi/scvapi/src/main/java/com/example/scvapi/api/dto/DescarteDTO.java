@@ -21,6 +21,7 @@ public class DescarteDTO {
         DescarteDTO dto = modelMapper.map(descarte, DescarteDTO.class);
 
         dto.estoqueId = descarte.getEstoque().getId();
+        dto.estoqueNome = descarte.getEstoque().getNome();
         dto.quantidadeDescartes = descarte.getQuantidadeDescarte();
         dto.quantidadeDisponivel = descarte.getEstoque().getQuantidadeDisponivel();
 
