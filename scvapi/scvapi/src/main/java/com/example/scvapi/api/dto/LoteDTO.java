@@ -11,20 +11,24 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class LoteDTO {
     private Long id;
-    private LocalDate dataValidade;
+    private String dataValidade;
     private String numeroLote;
     private int numeroAmpola;
     private int dosesAmpola;
     private Long compraId;
     private Long vacinaId;
+    private String vacina;
     private Long estoqueId;
+    private String estoqueNome;
 
     public static LoteDTO create(Lote lote) {
         ModelMapper modelMapper = new ModelMapper();
         LoteDTO dto = modelMapper.map(lote, LoteDTO.class);
         dto.compraId = lote.getCompra().getId();
         dto.vacinaId = lote.getVacina().getId();
+        dto.vacina = lote.getVacina().getVacina();
         dto.estoqueId = lote.getEstoque().getId();
+        dto.estoqueNome = lote.getEstoque().getNome();
         return dto;
     }
 
