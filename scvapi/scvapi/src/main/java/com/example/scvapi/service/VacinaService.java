@@ -36,12 +36,8 @@ public class VacinaService {
     @Transactional
     public void excluir(Vacina vacina){
         Objects.requireNonNull(vacina.getId());
+        repository.delete(vacina);
 
-        try{
-            repository.delete(vacina);
-        } catch (DataIntegrityViolationException e){
-            throw new  RegraNegocioException("Não é possível excluir a vacina. Existem registros vinculados.");
-        }
     }
 
     private void validar(Vacina vacina)
