@@ -1,8 +1,17 @@
 package com.example.scvapi.service;
 
 import com.example.scvapi.exception.RegraNegocioException;
+import com.example.scvapi.exception.SenhaInvalidaException;
 import com.example.scvapi.model.entity.Usuario;
 import com.example.scvapi.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -11,14 +20,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class UsuarioService {
+@RequiredArgsConstructor
+public class UsuarioService implements UserDetailsService {
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
     private UsuarioRepository repository;
 
-    public UsuarioService(UsuarioRepository repository) {
-        this.repository = repository;
-    }
-
-    public List<Usuario> getUsuario(){
+    public List<Usuario> getUsuarios() {
         return repository.findAll();
     }
 
@@ -27,9 +37,36 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario salvar(Usuario usuario) {
+    public Usuario salvar(Usuario usuario){
         validar(usuario);
         return repository.save(usuario);
+    }
+
+    public UserDetails autenticar(Usuario usuario){
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+
+        if (senhasBatem){
+            return user;
+        }
+        throw new SenhaInvalidaException();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = repository.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+
+        String[] roles = usuario.isAdministrador()
+                ? new String[]{"ADMIN", "USER"}
+                : new String[]{"USER"};
+
+        return User
+                .builder()
+                .username(usuario.getLogin())
+                .password(usuario.getSenha())
+                .roles(roles)
+                .build();
     }
 
     @Transactional
@@ -38,16 +75,12 @@ public class UsuarioService {
         repository.delete(usuario);
     }
 
-    private void validar(Usuario usuario) {
-        if (usuario.getLogin() == null || usuario.getLogin().equals("")) {
+    public void validar(Usuario usuario) {
+        if (usuario.getLogin() == null || usuario.getLogin().trim().equals("")) {
             throw new RegraNegocioException("Login inválido");
         }
-        if (usuario.getCpf() == null || usuario.getCpf().equals("")) {
+        if (usuario.getCpf() == null || usuario.getCpf().trim().equals("")) {
             throw new RegraNegocioException("CPF inválido");
         }
-
     }
-
-
-
 }
