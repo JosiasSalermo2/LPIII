@@ -1,19 +1,22 @@
 package com.example.scvapi.api.controller;
 
+import com.example.scvapi.api.dto.CredenciaisDTO;
+import com.example.scvapi.api.dto.TokenDTO;
 import com.example.scvapi.api.dto.UsuarioDTO;
 import com.example.scvapi.exception.RegraNegocioException;
-import com.example.scvapi.model.entity.Funcionario;
+import com.example.scvapi.exception.SenhaInvalidaException;
 import com.example.scvapi.model.entity.Usuario;
-import com.example.scvapi.service.FuncionarioService;
+import com.example.scvapi.security.JwtService;
 import com.example.scvapi.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.BindingResult;
-import javax.validation.Valid;
-
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +29,13 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     private final UsuarioService service;
 
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final UsuarioService usuarioService;
+
     @GetMapping()
     public ResponseEntity get(){
-        List<Usuario> usuarios = service.getUsuario();
+        List<Usuario> usuarios = service.getUsuarios();
         return ResponseEntity.ok(usuarios.stream().map(UsuarioDTO::create).collect(Collectors.toList()));
     }
 
@@ -42,15 +49,18 @@ public class UsuarioController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> post(@RequestBody @Valid UsuarioDTO dto, BindingResult result) {
-        // Validação dos campos com @Valid
-        if (result.hasErrors()) {
-            String erro = result.getAllErrors().get(0).getDefaultMessage(); // Pega só o primeiro erro
-            return ResponseEntity.badRequest().body(erro);
-        }
-
+    public ResponseEntity post(@RequestBody UsuarioDTO dto) {
         try {
+            if (dto.getSenha() == null || dto.getSenha().trim().equals("") ||
+                    dto.getSenhaRepeticao() == null || dto.getSenhaRepeticao().trim().equals("")) {
+                return ResponseEntity.badRequest().body("Senha inválida");
+            }
+            if (!dto.getSenha().equals(dto.getSenhaRepeticao())) {
+                return ResponseEntity.badRequest().body("Senhas não conferem");
+            }
             Usuario usuario = converter(dto);
+            String senhaCriptografada = passwordEncoder.encode(dto.getSenha());
+            usuario.setSenha(senhaCriptografada);
             usuario = service.salvar(usuario);
             return new ResponseEntity(usuario, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
@@ -58,17 +68,33 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody @Valid UsuarioDTO dto, BindingResult result) {
-        if (result.hasErrors()) {
-            String erro = result.getAllErrors().get(0).getDefaultMessage();
-            return ResponseEntity.badRequest().body(erro);
+    @PostMapping("/auth")
+    public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais){
+        try{
+            Usuario usuario = Usuario.builder()
+                    .login(credenciais.getLogin())
+                    .senha(credenciais.getSenha()).build();
+            UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
+            String token = jwtService.gerarToken(usuario);
+            return new TokenDTO(usuario.getLogin(), token);
+        } catch (UsernameNotFoundException | SenhaInvalidaException e ){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
+    }
 
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody UsuarioDTO dto) {
         if (!service.getUsuarioById(id).isPresent()) {
             return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
         try {
+            if (dto.getSenha() == null || dto.getSenha().trim().equals("") ||
+                    dto.getSenhaRepeticao() == null || dto.getSenhaRepeticao().trim().equals("")) {
+                return ResponseEntity.badRequest().body("Senha inválida");
+            }
+            if (!dto.getSenha().equals(dto.getSenhaRepeticao())) {
+                return ResponseEntity.badRequest().body("Senhas não conferem");
+            }
             Usuario usuario = converter(dto);
             usuario.setId(id);
             service.salvar(usuario);
@@ -97,6 +123,6 @@ public class UsuarioController {
         Usuario usuario = modelMapper.map(dto, Usuario.class);
         return usuario;
 
-}
+    }
 }
 
