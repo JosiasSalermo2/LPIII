@@ -14,7 +14,6 @@ public class DescarteDTO {
     private int quantidadeDescartes;
     private Long estoqueId;
     private String estoqueNome;
-    private int quantidadeDisponivel;
 
     public static DescarteDTO create(Descarte descarte) {
         ModelMapper modelMapper = new ModelMapper();
@@ -22,8 +21,8 @@ public class DescarteDTO {
 
         dto.estoqueId = descarte.getEstoque().getId();
         dto.estoqueNome = descarte.getEstoque().getNome();
+        dto.nome = descarte.getNome();
         dto.quantidadeDescartes = descarte.getQuantidadeDescarte();
-        dto.quantidadeDisponivel = descarte.getEstoque().getQuantidadeDisponivel();
 
         return dto;
     }
