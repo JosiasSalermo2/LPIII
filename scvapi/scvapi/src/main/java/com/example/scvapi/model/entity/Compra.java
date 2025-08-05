@@ -28,4 +28,7 @@ public class Compra {
 
     @ManyToOne
     private Vacina vacina;
+
+    @ManyToOne
+    private Estoque estoque;
 }
