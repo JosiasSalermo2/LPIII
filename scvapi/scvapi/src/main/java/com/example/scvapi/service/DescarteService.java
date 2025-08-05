@@ -2,7 +2,9 @@ package com.example.scvapi.service;
 
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Descarte;
+import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.repository.DescarteRepository;
+import com.example.scvapi.repository.EstoqueRepository;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -13,11 +15,14 @@ import java.util.Optional;
 @Service
 public class DescarteService
 {
-    private DescarteRepository repository;
-    public DescarteService(DescarteRepository descarteRepository)
-    {
+    private final DescarteRepository repository;
+    private final EstoqueRepository estoqueRepository;
+
+    public DescarteService(DescarteRepository descarteRepository, EstoqueRepository estoqueRepository) {
         this.repository = descarteRepository;
+        this.estoqueRepository = estoqueRepository;
     }
+
 
     public List<Descarte> getDescarte()
     {
@@ -30,9 +35,22 @@ public class DescarteService
     }
 
     @Transactional
-    public Descarte salvar(Descarte descarte)
-    {
+    public Descarte salvar(Descarte descarte) {
         validar(descarte);
+
+        Estoque estoque = estoqueRepository.findById(descarte.getEstoque().getId())
+                .orElseThrow(() -> new RegraNegocioException("Estoque não encontrado"));
+
+        int quantidadeDescarte = descarte.getQuantidadeDescarte();
+
+        if (estoque.getQuantidadeDisponivel() < quantidadeDescarte) {
+            throw new RegraNegocioException("Quantidade em estoque insuficiente para o descarte.");
+        }
+
+        estoque.setQuantidadeDisponivel(estoque.getQuantidadeDisponivel() - quantidadeDescarte);
+        estoqueRepository.save(estoque);
+
+        descarte.setEstoque(estoque);
         return repository.save(descarte);
     }
 
@@ -51,8 +69,5 @@ public class DescarteService
         if (descarte.getEstoque().getNome() == null || descarte.getEstoque().getNome().equals("")) {
             throw new RegraNegocioException("Estoque inválido");
         }
-
-        //Falta outros campos porque no DescarteDTO não tem data descarte e nem motivo
-
     }
 }
