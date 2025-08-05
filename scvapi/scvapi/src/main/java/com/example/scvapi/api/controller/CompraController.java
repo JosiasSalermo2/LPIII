@@ -1,14 +1,8 @@
 package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.CompraDTO;
-import com.example.scvapi.model.entity.Compra;
-import com.example.scvapi.model.entity.Fabricante;
-import com.example.scvapi.model.entity.Fornecedor;
-import com.example.scvapi.model.entity.Vacina;
-import com.example.scvapi.service.CompraService;
-import com.example.scvapi.service.FabricanteService;
-import com.example.scvapi.service.FornecedorService;
-import com.example.scvapi.service.VacinaService;
+import com.example.scvapi.model.entity.*;
+import com.example.scvapi.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -30,6 +24,7 @@ public class CompraController
     private final FornecedorService fornecedorService;
     private final FabricanteService fabricanteService;
     private final VacinaService vacinaService;
+    private final EstoqueService estoqueService;
 
     @GetMapping()
     public ResponseEntity get()
@@ -127,6 +122,18 @@ public class CompraController
             else
             {
                 compra.setVacina(vacina.get());
+            }
+        }
+        if (dto.getEstoqueId() != null)
+        {
+            Optional<Estoque> estoque = estoqueService.getEstoqueById(dto.getEstoqueId());
+            if (!estoque.isPresent())
+            {
+                compra.setEstoque(null);
+            }
+            else
+            {
+                compra.setEstoque(estoque.get());
             }
         }
         return compra;
