@@ -2,8 +2,10 @@ package com.example.scvapi.api.controller;
 
 import com.example.scvapi.api.dto.FornecedorDTO;
 import com.example.scvapi.exception.RegraNegocioException;
+import com.example.scvapi.model.entity.Endereco;
 import com.example.scvapi.model.entity.Fornecedor;
 import com.example.scvapi.model.entity.Telefone;
+import com.example.scvapi.service.EnderecoService;
 import com.example.scvapi.service.FornecedorService;
 import com.example.scvapi.service.TelefoneService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class FornecedorController
 {
      private final FornecedorService fornecedorService;
      private final TelefoneService telefoneService;
+    private final EnderecoService enderecoService;
 
     @GetMapping()
     public ResponseEntity get()
@@ -95,6 +98,16 @@ public class FornecedorController
                  fornecedor.setTelefone(null);
              }else {
                  fornecedor.setTelefone(telefone.get());
+             }
+         }
+         if (dto.getEnderecoId() != null)
+         {
+             Optional<Endereco> endereco = enderecoService.getEnderecoById(dto.getEnderecoId());
+             if(!endereco.isPresent())
+             {
+                 fornecedor.setEndereco(null);
+             }else {
+                 fornecedor.setEndereco(endereco.get());
              }
          }
          return fornecedor;
