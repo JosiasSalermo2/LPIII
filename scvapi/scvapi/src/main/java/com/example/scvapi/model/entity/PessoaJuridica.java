@@ -24,4 +24,7 @@ public abstract class PessoaJuridica {
     @ManyToOne
     private Telefone telefone;
 
+    @ManyToOne
+    private Endereco endereco;
+
 }
