@@ -13,10 +13,16 @@ public class FabricanteDTO {
     private String email;
     private String cnpj;
     private String razaoSocial;
+    private Long telefoneId;
+    private String telefoneDDD;
+    private String telefoneNumero;
 
     public static FabricanteDTO create(Fabricante fabricante) {
         ModelMapper modelMapper = new ModelMapper();
         FabricanteDTO dto = modelMapper.map(fabricante, FabricanteDTO.class);
+        dto.telefoneId = fabricante.getTelefone().getId();
+        dto.telefoneDDD = fabricante.getTelefone().getDdd();
+        dto.telefoneNumero = fabricante.getTelefone().getNumero();
         return dto;
     }
 }
