@@ -21,4 +21,10 @@ public class Funcionario extends PessoaFisica{
     @ManyToOne
     private Cargo cargo;
 
+    @ManyToOne
+    private Telefone telefone;
+
+    @ManyToOne
+    private Endereco endereco;
+
 }
