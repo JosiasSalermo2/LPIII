@@ -3,7 +3,9 @@ package com.example.scvapi.api.controller;
 import com.example.scvapi.api.dto.FornecedorDTO;
 import com.example.scvapi.exception.RegraNegocioException;
 import com.example.scvapi.model.entity.Fornecedor;
+import com.example.scvapi.model.entity.Telefone;
 import com.example.scvapi.service.FornecedorService;
+import com.example.scvapi.service.TelefoneService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class FornecedorController
 {
      private final FornecedorService fornecedorService;
+     private final TelefoneService telefoneService;
 
     @GetMapping()
     public ResponseEntity get()
@@ -84,6 +87,16 @@ public class FornecedorController
      {
          ModelMapper modelMapper = new ModelMapper();
          Fornecedor fornecedor = modelMapper.map(dto, Fornecedor.class);
+         if (dto.getTelefoneId() != null)
+         {
+             Optional<Telefone> telefone = telefoneService.getTelefoneById(dto.getTelefoneId());
+             if(!telefone.isPresent())
+             {
+                 fornecedor.setTelefone(null);
+             }else {
+                 fornecedor.setTelefone(telefone.get());
+             }
+         }
          return fornecedor;
      }
 
