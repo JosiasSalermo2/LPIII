@@ -21,4 +21,7 @@ public abstract class PessoaJuridica {
     private String cnpj;
     private String razaoSocial;
 
+    @ManyToOne
+    private Telefone telefone;
+
 }
