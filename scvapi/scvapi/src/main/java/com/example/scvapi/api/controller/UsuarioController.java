@@ -71,12 +71,19 @@ public class UsuarioController {
     @PostMapping("/auth")
     public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais){
         try{
-            Usuario usuario = Usuario.builder()
+            Usuario usuarioLogin = Usuario.builder()
                     .login(credenciais.getLogin())
-                    .senha(credenciais.getSenha()).build();
-            UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
-            String token = jwtService.gerarToken(usuario);
-            return new TokenDTO(usuario.getLogin(), token);
+                    .senha(credenciais.getSenha())
+                    .build();
+
+            // Agora esse "usuarioAutenticado" deve ser um Usuario, não UserDetails
+            Usuario usuarioAutenticado = usuarioService.autenticar(usuarioLogin);
+
+            // ✅ Gere o token com o objeto completo
+            String token = jwtService.gerarToken(usuarioAutenticado);
+
+            return new TokenDTO(usuarioAutenticado.getLogin(), token);
+
         } catch (UsernameNotFoundException | SenhaInvalidaException e ){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
