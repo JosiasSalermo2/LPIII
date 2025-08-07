@@ -42,15 +42,19 @@ public class UsuarioService implements UserDetailsService {
         return repository.save(usuario);
     }
 
-    public UserDetails autenticar(Usuario usuario){
-        UserDetails user = loadUserByUsername(usuario.getLogin());
-        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+    public Usuario autenticar(Usuario usuario){
+        Usuario usuarioEncontrado = repository.findByLogin(usuario.getLogin())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        if (senhasBatem){
-            return user;
+        boolean senhasBatem = encoder.matches(usuario.getSenha(), usuarioEncontrado.getSenha());
+
+        if (!senhasBatem){
+            throw new SenhaInvalidaException();
         }
-        throw new SenhaInvalidaException();
+
+        return usuarioEncontrado;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
