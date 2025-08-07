@@ -33,6 +33,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .setSubject(usuario.getLogin())
+                .claim("role", usuario.getRole())
                 .setExpiration(data)
                 .signWith( SignatureAlgorithm.HS512, chaveAssinatura )
                 .compact();
