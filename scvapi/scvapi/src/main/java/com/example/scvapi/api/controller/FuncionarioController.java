@@ -3,10 +3,14 @@ package com.example.scvapi.api.controller;
 import com.example.scvapi.api.dto.EstoqueDTO;
 import com.example.scvapi.api.dto.FuncionarioDTO;
 import com.example.scvapi.exception.RegraNegocioException;
+import com.example.scvapi.model.entity.Endereco;
 import com.example.scvapi.model.entity.Estoque;
 import com.example.scvapi.model.entity.Funcionario;
+import com.example.scvapi.model.entity.Telefone;
 import com.example.scvapi.service.CargoService;
+import com.example.scvapi.service.EnderecoService;
 import com.example.scvapi.service.FuncionarioService;
+import com.example.scvapi.service.TelefoneService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -22,18 +26,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CrossOrigin
 public class FuncionarioController {
-    private final FuncionarioService service;
+    private final FuncionarioService funcionarioService;
     private final CargoService cargoService;
+    private final TelefoneService telefoneService;
+    private final EnderecoService enderecoService;
 
     @GetMapping()
     public ResponseEntity get(){
-        List<Funcionario> funcionarios = service.getFuncionario();
+        List<Funcionario> funcionarios = funcionarioService.getFuncionario();
         return ResponseEntity.ok(funcionarios.stream().map(FuncionarioDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        Optional<Funcionario> funcionario = service.getFuncionarioById(id);
+        Optional<Funcionario> funcionario = funcionarioService.getFuncionarioById(id);
         if (!funcionario.isPresent()) {
             return new ResponseEntity("Funcionário não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -44,7 +50,7 @@ public class FuncionarioController {
     public ResponseEntity post(@RequestBody FuncionarioDTO dto) {
         try {
             Funcionario funcionario = converter(dto);
-            funcionario = service.salvar(funcionario);
+            funcionario = funcionarioService.salvar(funcionario);
             return new ResponseEntity(funcionario, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
@@ -53,13 +59,13 @@ public class FuncionarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody FuncionarioDTO dto) {
-        if (!service.getFuncionarioById(id).isPresent()) {
+        if (!funcionarioService.getFuncionarioById(id).isPresent()) {
             return new ResponseEntity("Funcionário não encontrado", HttpStatus.NOT_FOUND);
         }
         try {
             Funcionario funcionario = converter(dto);
             funcionario.setId(id);
-            funcionario = service.salvar(funcionario);
+            funcionario = funcionarioService.salvar(funcionario);
             return ResponseEntity.ok(funcionario);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -68,12 +74,12 @@ public class FuncionarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id){
-        Optional<Funcionario> funcionario = service.getFuncionarioById(id);
+        Optional<Funcionario> funcionario = funcionarioService.getFuncionarioById(id);
         if (!funcionario.isPresent()) {
             return new ResponseEntity("Funcionário não encontrado", HttpStatus.NOT_FOUND);
         }
         try{
-            service.excluir(funcionario.get());
+            funcionarioService.excluir(funcionario.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -87,6 +93,24 @@ public class FuncionarioController {
 
         if(dto.getCargoId() != null){
             cargoService.getCargoById(dto.getCargoId()).ifPresent(funcionario::setCargo);
+        }
+
+        if (dto.getTelefoneId() != null){
+            Optional<Telefone> telefone = telefoneService.getTelefoneById(dto.getTelefoneId());
+            if (!telefone.isPresent()) {
+                funcionario.setTelefone(null);
+            }else{
+                funcionario.setTelefone(telefone.get());
+            }
+        }
+
+        if (dto.getEnderecoId() != null){
+            Optional<Endereco> endereco = enderecoService.getEnderecoById(dto.getEnderecoId());
+            if (!endereco.isPresent()) {
+                funcionario.setEndereco(null);
+            }else{
+                funcionario.setEndereco(endereco.get());
+            }
         }
         return funcionario;
     }

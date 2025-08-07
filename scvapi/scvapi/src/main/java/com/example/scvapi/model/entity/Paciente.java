@@ -19,5 +19,10 @@ public class Paciente extends PessoaFisica {
     private String contraindicacao;
     private String medicamentosRegulares;
 
+    @ManyToOne
+    private Telefone telefone;
+
+    @ManyToOne
+    private Endereco endereco;
 
 }
