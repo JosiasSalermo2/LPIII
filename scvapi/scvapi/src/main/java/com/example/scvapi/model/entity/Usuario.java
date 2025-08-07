@@ -22,4 +22,8 @@ public class Usuario {
     private String senha;
     private String cpf;
     private boolean administrador;
+
+    public String getRole() {
+        return this.administrador ? "ADMIN" : "USER";
+    }
 }
