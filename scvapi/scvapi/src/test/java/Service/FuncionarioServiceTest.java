@@ -40,7 +40,7 @@ class FuncionarioServiceValidarTest {
         Funcionario f = new Funcionario();
         f.setNome("a");
         f.setEmail("a@a.com");
-        f.setCpf("123");
+        f.setCpf("11122233344");
         return f;
     }
 
