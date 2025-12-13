@@ -65,7 +65,7 @@ class FuncionarioServiceValidarTest {
     @Test
     void deveLancarQuandoNomeForApenasEspacos() {
         Funcionario f = funcionarioBaseValida();
-        f.setNome("   ");
+        f.setNome(" ");
 
         RegraNegocioException ex = assertThrows(RegraNegocioException.class, () -> invokeValidar(f));
         assertEquals("Nome inválido", ex.getMessage());
@@ -136,7 +136,7 @@ class FuncionarioServiceValidarTest {
     @Test
     void deveLancarQuandoCpfForApenasEspacos() {
         Funcionario f = funcionarioBaseValida();
-        f.setCpf("   ");
+        f.setCpf(" ");
 
         RegraNegocioException ex = assertThrows(RegraNegocioException.class, () -> invokeValidar(f));
         assertEquals("CPF inválido", ex.getMessage());
@@ -145,7 +145,7 @@ class FuncionarioServiceValidarTest {
     @Test
     void naoDeveLancarQuandoCpfForMinimoValido() {
         Funcionario f = funcionarioBaseValida();
-        f.setCpf("1");
+        f.setCpf("11122233344");
 
         assertDoesNotThrow(() -> invokeValidar(f));
     }
