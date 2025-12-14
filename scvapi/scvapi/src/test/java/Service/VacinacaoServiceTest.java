@@ -1,6 +1,7 @@
 package Service;
 
 import com.example.scvapi.exception.RegraNegocioException;
+import com.example.scvapi.model.entity.Agendamento;
 import com.example.scvapi.model.entity.Paciente;
 import com.example.scvapi.model.entity.Vacinacao;
 import com.example.scvapi.service.VacinacaoService;
@@ -37,8 +38,11 @@ class VacinacaoServiceValidarTest {
             throw new RuntimeException(e);
         }
     }
-
     private Vacinacao vacinacaoComPaciente(String nome, String email, String dataNascimento, String dataAplicacao) {
+        return vacinacaoComPaciente(nome, email, dataNascimento, dataAplicacao, null);
+    }
+
+    private Vacinacao vacinacaoComPaciente(String nome, String email, String dataNascimento, String dataAplicacao, Agendamento agendamento) {
         Vacinacao v = mock(Vacinacao.class);
         Paciente p = mock(Paciente.class);
 
@@ -48,21 +52,26 @@ class VacinacaoServiceValidarTest {
         when(p.getDataNascimento()).thenReturn(dataNascimento);
 
         when(v.getDataAplicacao()).thenReturn(dataAplicacao);
+        when(v.getAgendamento()).thenReturn(agendamento);
 
         return v;
     }
 
     @Test
-    void deveLancarNPEQuandoVacinacaoForNull() {
-        assertThrows(NullPointerException.class, () -> invokeValidar(null));
+    void deveLancarQuandoVacinacaoForNull() {
+        RegraNegocioException ex =
+                assertThrows(RegraNegocioException.class, () -> invokeValidar(null));
+        assertEquals("Vacinacao inválida", ex.getMessage());
     }
 
     @Test
-    void deveLancarNPEQuandoPacienteForNull() {
+    void deveLancarQuandoPacienteForNull() {
         Vacinacao v = mock(Vacinacao.class);
         when(v.getPaciente()).thenReturn(null);
 
-        assertThrows(NullPointerException.class, () -> invokeValidar(v));
+        RegraNegocioException ex =
+                assertThrows(RegraNegocioException.class, () -> invokeValidar(v));
+        assertEquals("Paciente inválido", ex.getMessage());
     }
 
     @Test
@@ -114,10 +123,12 @@ class VacinacaoServiceValidarTest {
     }
 
     @Test
-    void deveLancarNPEQuandoDataAplicacaoForNull() {
+    void deveLancarQuandoDataAplicacaoForNull() {
         Vacinacao v = vacinacaoComPaciente("a", "a@a.com", "2000-01-01", null);
 
-        assertThrows(NullPointerException.class, () -> invokeValidar(v));
+        RegraNegocioException ex =
+                assertThrows(RegraNegocioException.class, () -> invokeValidar(v));
+        assertEquals("Data de aplicação inválida", ex.getMessage());
     }
 
     @Test
@@ -135,4 +146,16 @@ class VacinacaoServiceValidarTest {
         RegraNegocioException ex = assertThrows(RegraNegocioException.class, () -> invokeValidar(v));
         assertEquals("Agendamento inválido", ex.getMessage());
     }
+
+    @Test
+    void naoDeveLancarQuandoDadosValidos() {
+        Agendamento ag = mock(Agendamento.class);
+
+        Vacinacao v = vacinacaoComPaciente(
+                "a", "a@a.com", "2000-01-01", "2025-01-01T10:00", ag
+        );
+
+        assertDoesNotThrow(() -> invokeValidar(v));
+    }
+
 }

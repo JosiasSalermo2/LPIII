@@ -45,23 +45,30 @@ public class VacinacaoService
 
     private void validar(Vacinacao vacinacao)
     {
-        if (vacinacao.getPaciente().getNome() == null || vacinacao.getPaciente().getNome().equals(""))
+        if (vacinacao == null)
+        {
+            throw new RegraNegocioException("Vacinacao inválida");
+        }
+        if (vacinacao.getPaciente() == null){
+            throw new RegraNegocioException("Paciente inválido");
+        }
+        if (vacinacao.getPaciente().getNome() == null || vacinacao.getPaciente().getNome().trim().isEmpty())
         {
             throw new RegraNegocioException("Paciente inválido");
         }
-        if (vacinacao.getPaciente().getEmail() == null || vacinacao.getPaciente().getEmail().equals(""))
+        if (vacinacao.getPaciente().getEmail() == null || vacinacao.getPaciente().getEmail().trim().isEmpty())
         {
             throw new RegraNegocioException("Email inválido");
         }
-        if (vacinacao.getPaciente().getDataNascimento() == null || vacinacao.getPaciente().getDataNascimento().equals(""))
+        if (vacinacao.getPaciente().getDataNascimento() == null || vacinacao.getPaciente().getDataNascimento().trim().isEmpty())
         {
             throw new RegraNegocioException("Data de nascimento inválida");
         }
-        if (vacinacao == null || vacinacao.getDataAplicacao().equals(""))
+        if (vacinacao.getDataAplicacao() == null || vacinacao.getDataAplicacao().trim().isEmpty())
         {
             throw new RegraNegocioException("Data de aplicação inválida");
         }
-        if (vacinacao.getAgendamento() == null || vacinacao.getAgendamento().equals(""))
+        if (vacinacao.getAgendamento() == null )
         {
             throw new RegraNegocioException("Agendamento inválido");
         }
